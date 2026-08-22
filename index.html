@@ -3,298 +3,114 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>WYNK | Dashboard Growth & Analytics 2026</title>
-  <meta name="description" content="Dashboard interno de Growth para WYNK con Analytics, Google Ads y proyección condicionada a diciembre de 2026.">
+  <title>WYNK | Proyección ejecutiva 2026</title>
+  <meta name="description" content="Calculadora ejecutiva WYNK para proyectar sesiones, transacciones, ventas e inversión.">
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
-    :root{--ink:#101820;--muted:#657383;--line:#e2ddea;--surface:#f7f4fa;--blue:#398dcb;--blue2:#628cca;--violet:#8f85c5;--pink:#b170b5;--soft:#f3eff8;--brand:linear-gradient(115deg,#398dcb 0%,#8f85c5 56%,#b170b5 100%);--warn:#8c5c28}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;overflow-x:hidden;background:#fff;color:var(--ink);font:14px "Montserrat",Arial,sans-serif}button{font:inherit;color:inherit;cursor:pointer}main{min-height:100vh;background:radial-gradient(circle at 8% 0%,rgba(57,141,203,.10),transparent 25%),radial-gradient(circle at 94% 5%,rgba(177,112,181,.11),transparent 29%),#fff}.shell{width:min(1380px,calc(100% - 40px));margin:auto;padding:34px 0 46px}
-    header{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;padding-bottom:24px;border-bottom:1px solid var(--line)}.eyebrow,.kicker{margin:0 0 8px;color:var(--blue2);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}h1{margin:0;font-size:clamp(30px,4vw,50px);letter-spacing:-.045em;line-height:1}header p:last-child{margin:11px 0 0;color:var(--muted)}.pill{display:inline-flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:11px;font-weight:600}.pill i{width:8px;height:8px;border-radius:50%;background:var(--blue2);box-shadow:0 0 0 5px var(--soft)}
-    .tabs{display:flex;gap:7px;margin:17px 0 2px;padding:5px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.86)}.tabs button{display:grid;grid-template-columns:30px auto;column-gap:8px;flex:1;min-height:53px;padding:9px 13px;border:0;border-radius:11px;background:transparent;color:var(--muted);text-align:left}.tabs button.active{background:linear-gradient(135deg,rgba(57,141,203,.17),rgba(177,112,181,.19));color:var(--ink);box-shadow:0 4px 14px rgba(143,133,197,.13)}.tabs span{grid-row:1/3;align-self:center;color:var(--pink);font-size:15px;font-weight:800}.tabs b,.tabs small{display:block}.tabs b{font-size:10px}.tabs small{margin-top:2px;font-size:8px}.tab-view{display:none}.tab-view.active{display:block}
-    .callout{display:grid;grid-template-columns:auto 1.7fr .85fr;align-items:center;gap:24px;margin:25px 0 18px;padding:25px 28px;border-radius:23px;background:var(--brand);box-shadow:0 18px 45px rgba(143,133,197,.22)}.callout .n{display:grid;place-items:center;width:54px;height:54px;border:1px solid rgba(16,24,32,.22);border-radius:17px;font-weight:800}.callout .kicker{color:rgba(16,24,32,.72)}.callout h2{margin:0;font-size:clamp(20px,2.2vw,29px);line-height:1.25;letter-spacing:-.03em}.callout>p{margin:0;color:rgba(16,24,32,.78);font-size:12px;line-height:1.7}
-    .scenario-head{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:13px 0}.scenario-head h2{margin:0;font-size:21px;letter-spacing:-.03em}.scenario-head h2 span{color:var(--blue2)}.scenario-switch button{min-width:105px}.scenario-switch b,.scenario-switch small{display:block}.scenario-switch small{margin-top:3px;color:var(--muted);font-size:8px}
-    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:15px}.kpi{min-height:130px;padding:21px;border:1px solid var(--line);border-radius:19px;background:#fff}.kpi.primary{background:var(--brand);border:0}.kpi p{margin:0;color:var(--muted);font-size:10px;font-weight:700;text-transform:uppercase}.kpi.primary p,.kpi.primary span{color:rgba(16,24,32,.72)}.kpi strong{display:block;margin:14px 0 8px;font-size:clamp(25px,2.6vw,36px);letter-spacing:-.045em}.kpi span{color:#315f91;font-size:10px;font-weight:600}
-    .card{margin-top:15px;padding:24px;border:1px solid var(--line);border-radius:21px;background:#fff;box-shadow:0 10px 35px rgba(11,56,91,.045)}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:15px}.card-head h2{margin:0;font-size:21px;letter-spacing:-.03em}.switch{display:inline-flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}.switch button{padding:9px 13px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:10px;font-weight:700}.switch button.active{background:linear-gradient(135deg,rgba(57,141,203,.16),rgba(177,112,181,.18));color:var(--ink);box-shadow:0 4px 12px rgba(143,133,197,.12)}
-    .chart{display:flex;align-items:flex-end;gap:clamp(18px,4vw,64px);height:310px;padding:46px 8% 33px;border-bottom:1px solid var(--line);background:repeating-linear-gradient(to bottom,#fff 0,#fff 24.6%,#eee9f2 25%,#fff 25.4%)}.bar-wrap{display:flex;flex:1;min-width:42px;height:100%;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}.bar{width:min(58px,76%);min-height:3px;border-radius:8px 8px 3px 3px;transition:height .35s ease,opacity .2s}.bar:hover{opacity:.72}.bar-wrap label{position:absolute;bottom:-24px;color:var(--muted);font-size:9px;font-weight:600}.bar-wrap .tip{position:absolute;z-index:2;bottom:calc(var(--h) + 8px);white-space:nowrap;font-size:9px;font-weight:800}.legend,.note-strip{display:flex;justify-content:center;gap:17px;flex-wrap:wrap;margin-top:14px;color:var(--muted);font-size:9px}.legend span{display:flex;align-items:center;gap:6px}.legend i{width:8px;height:8px;border-radius:3px;background:var(--blue)}.legend .partial{background:var(--violet)}.legend .break{background:var(--warn)}.legend .forecast{background:var(--pink)}.note-strip{justify-content:space-between;padding:12px 14px;border-radius:11px;background:var(--surface)}
-    .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:13px 11px;border-bottom:1px solid #eee9f2;text-align:right;white-space:nowrap;font-size:10px}th{color:var(--muted);font-size:8px;letter-spacing:.08em;text-transform:uppercase}th:first-child,td:first-child{text-align:left}.ratio{display:inline-block;min-width:76px;padding:6px 8px;border-radius:6px;background:linear-gradient(90deg,rgba(57,141,203,.18),rgba(177,112,181,.20));font-weight:700}.signal{display:inline-flex;min-width:70px;justify-content:center;padding:6px 8px;border-radius:999px;background:rgba(143,133,197,.18);color:#5d5397;font-size:8px;font-weight:800;text-transform:uppercase}.signal.audit{background:#edf0f3;color:#586572}.signal.warn{background:#f5eadf;color:var(--warn)}
-    .findings,.decisions{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:15px}.finding,.decision{padding:22px;border:1px solid var(--line);border-radius:19px;background:#fff}.finding:nth-child(2),.decision:nth-child(2){background:linear-gradient(135deg,rgba(57,141,203,.11),rgba(177,112,181,.16));border-color:rgba(143,133,197,.42)}.finding h3,.decision h3{margin:0 0 13px;font-size:16px}.finding strong,.decision strong{display:block;margin-bottom:8px;color:#6f5da4;font-size:21px}.finding p:last-child,.decision p:last-child{margin:0;color:var(--muted);font-size:10px;line-height:1.6}
-    .network-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}.network-card{padding:21px;border:1px solid var(--line);border-radius:18px;background:#fff}.network-card header{align-items:flex-start;padding:0 0 14px}.network-card h3{margin:0;font-size:17px}.network-card .metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}.metric{padding:12px;border-radius:11px;background:var(--surface)}.metric small,.metric b{display:block}.metric small{color:var(--muted);font-size:7px;text-transform:uppercase}.metric b{margin-top:5px;font-size:13px}.share{height:9px;overflow:hidden;margin-top:16px;border-radius:999px;background:#eee9f2}.share i{display:block;height:100%;border-radius:inherit;background:var(--brand)}
-    .goal-list,.allocation-list{display:grid;gap:10px}.goal-row{display:grid;grid-template-columns:58px 1fr 145px;align-items:center;gap:14px;padding:12px;border:1px solid #ebe6ef;border-radius:12px}.goal-row>strong{font-size:11px}.goal-track{position:relative;height:24px;border-radius:999px;background:#f1edf4}.goal-track i{display:block;height:100%;max-width:100%;border-radius:inherit;background:var(--brand)}.goal-track b{position:absolute;top:-5px;bottom:-5px;left:71.43%;width:2px;background:var(--ink)}.goal-track b:after{content:"100%";position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:7px}.goal-row small{color:var(--muted);font-size:8px;line-height:1.5}.goal-row small b{display:block;color:var(--ink);font-size:10px}.allocation-row{display:grid;grid-template-columns:minmax(190px,1fr) minmax(220px,2fr) 90px;align-items:center;gap:12px;padding:9px 11px;border:1px solid #ebe6ef;border-radius:11px}.allocation-row span b,.allocation-row span small{display:block}.allocation-row span small{margin-top:3px;color:var(--muted);font-size:8px}.allocation-track{height:15px;overflow:hidden;border-radius:999px;background:#f1edf4}.allocation-track i{display:block;height:100%;border-radius:inherit}.allocation-row>strong{text-align:right;font-size:10px}.caution{margin-top:15px;padding:18px;border:1px solid rgba(140,92,40,.25);border-radius:15px;background:#fbf5ee}.caution h3{margin:0 0 8px;color:var(--warn);font-size:13px}.caution p{margin:0;color:var(--muted);font-size:9px;line-height:1.65}
-    .calculator-controls{display:grid;grid-template-columns:1fr 1.5fr;gap:18px;align-items:end;padding:16px;border-radius:14px;background:var(--surface)}.calculator-controls label{display:block;color:var(--muted);font-size:9px;font-weight:700;text-transform:uppercase}.calculator-controls input[type="range"]{width:100%;margin-top:12px;accent-color:var(--violet)}.calculator-output{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}.calculator-output span{padding:13px;border:1px solid var(--line);border-radius:11px;background:#fff}.calculator-output small,.calculator-output b{display:block}.calculator-output small{color:var(--muted);font-size:7px;text-transform:uppercase}.calculator-output b{margin-top:6px;font-size:14px}.calculator-output .ok b{color:#315f91}.calculator-output .blocked b{color:var(--warn)}
-    .validation-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:13px}.score{display:grid;place-items:center;width:116px;height:116px;margin:8px auto 20px;border:12px solid rgba(57,141,203,.18);border-right-color:var(--pink);border-radius:50%;font-size:28px;font-weight:800}.validation-list,.recs{display:grid;gap:7px}.validation-item,.rec{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:11px;border:1px solid #ebe6ef;border-radius:10px}.rec{border:0;background:var(--surface)}.validation-item>span,.rec>span{color:var(--pink);font-size:13px;font-weight:800}.validation-item b,.rec b{font-size:9px}.validation-item p,.rec p{margin:5px 0 0;color:var(--muted);font-size:8px;line-height:1.5}.rec small{display:block;margin-top:6px;color:var(--blue);font-size:7px;font-weight:700}
-    .roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--line)}.roadmap article{padding:20px;background:#fff}.roadmap span{color:var(--blue2);font-size:8px;font-weight:800;text-transform:uppercase}.roadmap h3{margin:8px 0;font-size:14px}.roadmap p{min-height:50px;margin:0 0 11px;color:var(--muted);font-size:9px;line-height:1.6}.roadmap b{font-size:8px}details{margin-top:15px;border:1px solid var(--line);border-radius:15px}summary{padding:14px 16px;color:var(--blue);font-size:10px;font-weight:700;cursor:pointer}details div{padding:0 16px 13px;color:var(--muted);font-size:9px;line-height:1.6}footer{display:flex;justify-content:space-between;gap:15px;margin-top:17px;padding-top:15px;border-top:1px solid var(--line);color:var(--muted);font-size:8px}
-    @media(max-width:960px){.kpis{grid-template-columns:repeat(2,1fr)}.callout{grid-template-columns:auto 1fr}.callout>p{grid-column:2}.validation-grid{grid-template-columns:1fr}}
-    @media(max-width:700px){.shell{width:calc(100% - 24px);padding-top:20px}header,.card-head,.scenario-head,footer{flex-direction:column;align-items:flex-start}h1{font-size:29px}.tabs{display:grid;grid-template-columns:minmax(0,1fr)}.callout{grid-template-columns:minmax(0,1fr);padding:21px}.callout>*{min-width:0}.callout h2,.callout p{overflow-wrap:anywhere}.callout .n{display:none}.callout>p{grid-column:1}.kpis,.findings,.decisions,.roadmap,.network-grid{grid-template-columns:minmax(0,1fr)}.card{min-width:0;padding:17px}.switch{max-width:100%;flex-wrap:wrap}.scenario-switch{width:100%}.scenario-switch button{min-width:0;flex:1}.chart{min-width:630px}#analyticsChart{min-width:920px}.chart-scroll{width:100%;overflow:auto}.network-card .metric-grid{grid-template-columns:1fr 1fr}.goal-row{grid-template-columns:42px minmax(150px,1fr)}.goal-row small{grid-column:1/-1}.allocation-row{grid-template-columns:minmax(150px,1fr) 75px}.allocation-track{grid-column:1/-1}.calculator-controls,.calculator-output{grid-template-columns:1fr 1fr}.calculator-controls>div{grid-column:1/-1}}
-    @media(max-width:430px){.calculator-controls,.calculator-output{grid-template-columns:minmax(0,1fr)}.calculator-controls>div{overflow-wrap:anywhere}.scenario-switch button{padding-inline:8px}}
-    @media print{.tabs,.switch{display:none}.tab-view{display:block!important;break-before:page}.tab-view:first-of-type{break-before:auto}.card,.finding,.decision{box-shadow:none}main{background:#fff}}
+    :root{--ink:#101820;--muted:#647282;--line:#ddd9e7;--paper:#fff;--soft:#f5f2f8;--blue:#398dcb;--blue2:#628cca;--violet:#8f85c5;--pink:#b170b5;--warn:#8c5c28;--brand:linear-gradient(120deg,#398dcb 0%,#718bc8 45%,#b170b5 100%)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f8f8fb;color:var(--ink);font:14px "Montserrat",Arial,sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid rgba(57,141,203,.38);outline-offset:2px}
+    main{min-height:100vh;background:radial-gradient(circle at 5% 0%,rgba(57,141,203,.12),transparent 29%),radial-gradient(circle at 95% 8%,rgba(177,112,181,.12),transparent 31%)}.shell{width:min(1320px,calc(100% - 40px));margin:auto;padding:30px 0 42px}
+    header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding-bottom:20px;border-bottom:1px solid var(--line)}.eyebrow,.kicker{margin:0 0 8px;color:var(--blue2);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}h1{margin:0;font-size:clamp(31px,4.2vw,54px);line-height:1;letter-spacing:-.05em}header p:last-child{margin:10px 0 0;color:var(--muted)}.status{display:inline-flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:10px;font-weight:700;white-space:nowrap}.status i{width:8px;height:8px;border-radius:50%;background:var(--warn);box-shadow:0 0 0 5px #f5eadf}
+    .hero{display:grid;grid-template-columns:1.5fr .7fr;gap:28px;align-items:center;margin:22px 0 16px;padding:28px 30px;border-radius:24px;background:var(--brand);box-shadow:0 18px 45px rgba(92,112,178,.18)}.hero h2{max-width:850px;margin:0;font-size:clamp(23px,2.6vw,34px);line-height:1.2;letter-spacing:-.035em}.hero p{margin:0;color:rgba(16,24,32,.76);font-size:11px;line-height:1.7}.hero .kicker{color:rgba(16,24,32,.7)}
+    .model{display:grid;grid-template-columns:minmax(300px,.78fr) minmax(0,1.42fr);gap:15px}.panel{padding:23px;border:1px solid var(--line);border-radius:21px;background:rgba(255,255,255,.94);box-shadow:0 10px 34px rgba(35,56,89,.05)}.panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:18px}.panel h2{margin:0;font-size:22px;letter-spacing:-.035em}.panel-head p{margin:6px 0 0;color:var(--muted);font-size:9px;line-height:1.5}
+    .switch{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:13px;background:var(--soft)}.switch button{min-height:38px;padding:8px 12px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:9px;font-weight:800}.switch button.active{background:linear-gradient(135deg,rgba(57,141,203,.18),rgba(177,112,181,.2));color:var(--ink);box-shadow:0 4px 12px rgba(102,102,160,.12)}
+    .control-list{display:grid;gap:11px}.control{padding:13px;border:1px solid #ebe7f0;border-radius:14px;background:#fff}.control-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.control label{font-size:10px;font-weight:800}.control small{display:block;margin-top:4px;color:var(--muted);font-size:8px}.number-wrap{display:flex;align-items:center;min-width:130px;border:1px solid var(--line);border-radius:9px;background:var(--soft);overflow:hidden}.number-wrap span{padding-left:10px;color:var(--blue2);font-size:10px;font-weight:800}.number-wrap input{width:100%;min-height:38px;padding:8px;border:0;background:transparent;text-align:right;font-weight:800;outline:0}.control input[type="range"]{width:100%;margin:13px 0 0;accent-color:var(--violet)}.control-note{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:var(--muted);font-size:8px}.reset{width:100%;min-height:44px;margin-top:13px;border:1px solid var(--line);border-radius:11px;background:var(--soft);font-size:9px;font-weight:800}
+    .results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.result{min-height:145px;padding:21px;border:1px solid var(--line);border-radius:18px;background:#fff}.result.primary{border:0;background:var(--brand)}.result p{margin:0;color:var(--muted);font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}.result.primary p,.result.primary span{color:rgba(16,24,32,.7)}.result strong{display:block;margin:17px 0 9px;font-size:clamp(29px,3.4vw,44px);line-height:1;letter-spacing:-.055em}.result span{color:#315f91;font-size:9px;font-weight:600;line-height:1.5}.formula-flow{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:13px;padding:13px;border-radius:13px;background:var(--soft);color:var(--muted);font-size:8px;font-weight:700}.formula-flow b{color:var(--ink)}.formula-flow i{color:var(--pink);font-style:normal}.decision{margin-top:13px;padding:16px 18px;border-left:4px solid var(--blue2);border-radius:5px 13px 13px 5px;background:#f1f4fa}.decision strong{display:block;margin-bottom:5px;font-size:13px}.decision p{margin:0;color:var(--muted);font-size:9px;line-height:1.6}
+    .monthly{margin-top:15px}.month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.month-card{padding:16px;border:1px solid var(--line);border-radius:15px;background:#fff}.month-card.active{border-color:var(--blue2);box-shadow:0 0 0 2px rgba(98,140,202,.13)}.month-card header{display:flex;align-items:center;justify-content:space-between;padding:0;border:0}.month-card h3{margin:0;font-size:15px}.signal{padding:6px 8px;border-radius:999px;background:#eaf2f8;color:#315f91;font-size:7px;font-weight:800;text-transform:uppercase}.signal.below{background:#f5eadf;color:var(--warn)}.month-card dl{display:grid;grid-template-columns:1fr auto;gap:8px;margin:14px 0 0}.month-card dt{color:var(--muted);font-size:8px}.month-card dd{margin:0;text-align:right;font-size:9px;font-weight:800}.track{height:8px;margin-top:13px;overflow:hidden;border-radius:999px;background:#eeeaf2}.track i{display:block;height:100%;border-radius:inherit;background:var(--brand)}
+    .decision-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:15px;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--line)}.decision-grid article{padding:17px;background:#fff}.decision-grid span{color:var(--blue2);font-size:8px;font-weight:800;text-transform:uppercase}.decision-grid p{margin:8px 0 0;color:var(--muted);font-size:9px;line-height:1.55}.decision-grid b{color:var(--ink)}
+    details{margin-top:15px;border:1px solid var(--line);border-radius:15px;background:#fff}summary{padding:15px 17px;color:var(--blue2);font-size:10px;font-weight:800;cursor:pointer}details div{padding:0 17px 16px;color:var(--muted);font-size:9px;line-height:1.7}details p{margin:8px 0}footer{display:flex;justify-content:space-between;gap:15px;margin-top:17px;padding-top:15px;border-top:1px solid var(--line);color:var(--muted);font-size:8px}
+    @media(max-width:960px){.hero{grid-template-columns:1fr}.model{grid-template-columns:1fr}.month-grid,.decision-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.shell{width:calc(100% - 24px);padding-top:19px}header,.panel-head,footer{align-items:flex-start;flex-direction:column}h1{font-size:31px}.status{white-space:normal}.hero{padding:22px}.panel{padding:17px}.switch{width:100%}.switch button{flex:1;padding-inline:7px}.results,.month-grid,.decision-grid{grid-template-columns:1fr}.control-head{align-items:flex-start;flex-direction:column}.number-wrap{width:100%}.result{min-height:130px}.formula-flow{justify-content:flex-start}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   </style>
 </head>
 <body>
 <main><div class="shell">
   <header>
-    <div><p class="eyebrow">WYNK · GROWTH & ANALYTICS</p><h1>Dashboard ejecutivo 2026</h1><p>Comportamiento digital, conversión y eficiencia de medios.</p></div>
-    <span class="pill"><i></i>GA4 Ene–Jul cerrado · Ago 1–19 · Ads al 21</span>
+    <div><p class="eyebrow">WYNK · MODELO EJECUTIVO</p><h1>Proyección comercial 2026</h1><p>Una vista para estimar sesiones, Transacciones, ventas e inversión.</p></div>
+    <span class="status"><i></i>Revisión humana requerida</span>
   </header>
 
-  <nav class="tabs" id="tabButtons" role="tablist" aria-label="Secciones del dashboard">
-    <button class="active" id="tab-overview" role="tab" aria-controls="overviewView" data-tab="overview"><span>01</span><b>Resumen Analytics</b><small>Transacciones y proyección</small></button>
-    <button id="tab-networks" role="tab" aria-controls="networksView" data-tab="networks"><span>02</span><b>Search vs. PMax</b><small>Mix y eficiencia</small></button>
-    <button id="tab-quality" role="tab" aria-controls="qualityView" data-tab="quality"><span>03</span><b>Calidad y acciones</b><small>Validación y próximos pasos</small></button>
-    <button id="tab-targets" role="tab" aria-controls="targetsView" data-tab="targets"><span>04</span><b>Objetivos y plan</b><small>Inversión y cumplimiento</small></button>
-  </nav>
+  <section class="hero">
+    <div><p class="kicker">LECTURA EJECUTIVA</p><h2>Una decisión, cuatro variables y un escenario mensual comparable contra el plan.</h2></div>
+    <p>El modelo usa mayo–julio como referencia. Agosto queda fuera por ruptura de definición. Los resultados son sensibilidades matemáticas, no ventas garantizadas.</p>
+  </section>
 
-  <div class="tab-view active" id="overviewView" role="tabpanel" aria-labelledby="tab-overview">
-    <section class="callout"><div class="n">01</div><div><p class="kicker">LECTURA GERENCIAL · GA4</p><h2>Julio mejoró la conversión Transacciones / Sesiones, pero agosto presenta una ruptura de definición que impide compararlo directamente.</h2></div><p>Julio alcanzó <b>0.225%</b> frente a 0.097% en junio. Agosto 1–19 reporta <b>1,682 Transacciones</b> desde el campo fuente “Eventos clave”; se conserva con alerta y se excluye del baseline.</p></section>
+  <section class="model">
+    <article class="panel">
+      <div class="panel-head"><div><p class="kicker">VARIABLES</p><h2>Construye el escenario</h2><p>Selecciona mes, usa un preset o edita cada valor.</p></div></div>
+      <div class="switch" id="monthButtons" role="group" aria-label="Mes de referencia"></div>
+      <div class="switch" id="scenarioButtons" role="group" aria-label="Preset de eficiencia" style="margin:9px 0 13px"></div>
+      <div class="control-list">
+        <div class="control"><div class="control-head"><div><label for="investmentInput">Inversión</label><small>Presupuesto del escenario</small></div><div class="number-wrap"><span>S/</span><input id="investmentInput" type="number" min="0" step="100" inputmode="decimal"></div></div><input id="investmentRange" type="range" min="0" step="100" aria-label="Inversión del escenario"><div class="control-note"><span>0</span><span id="investmentLimit"></span></div></div>
+        <div class="control"><div class="control-head"><div><label for="conversionInput">Conversión</label><small>Transacciones ÷ sesiones</small></div><div class="number-wrap"><input id="conversionInput" type="number" min="0.01" max="0.60" step="0.01" inputmode="decimal"><span>%</span></div></div><input id="conversionRange" type="range" min="0.01" max="0.60" step="0.01" aria-label="Tasa de conversión"><div class="control-note"><span>Base 0.16%</span><span id="conversionDisplay"></span></div></div>
+        <div class="control"><div class="control-head"><div><label for="ticketInput">Ticket promedio</label><small>Venta estimada por transacción</small></div><div class="number-wrap"><span>S/</span><input id="ticketInput" type="number" min="1" max="10000" step="10" inputmode="decimal"></div></div><div class="control-note"><span>Referencia GA4</span><span>Pendiente de validación comercial</span></div></div>
+        <div class="control"><div class="control-head"><div><label for="cpaInput">Costo de adquisición</label><small>Inversión estimada por transacción</small></div><div class="number-wrap"><span>S/</span><input id="cpaInput" type="number" min="1" max="2000" step="5" inputmode="decimal"></div></div><div class="control-note"><span>No es CAC</span><span id="cpaContext"></span></div></div>
+      </div>
+      <button class="reset" id="resetButton">Restablecer escenario +25%</button>
+    </article>
 
-    <section class="scenario-head"><div><p class="kicker">PROYECCIÓN A DICIEMBRE · ESCENARIO</p><h2>Mejora relativa de conversión <span id="scenarioName"></span></h2></div><div class="switch scenario-switch" id="scenarioButtons"></div></section>
+    <article class="panel">
+      <div class="panel-head"><div><p class="kicker">RESULTADOS</p><h2 id="resultTitle">Proyección de septiembre</h2><p id="resultAssumption"></p></div></div>
+      <div class="results" id="resultRegion" aria-live="polite">
+        <div class="result primary"><p>Ventas web proyectadas</p><strong id="projectedSales"></strong><span id="salesComparison"></span></div>
+        <div class="result"><p>Transacciones proyectadas</p><strong id="projectedTransactions"></strong><span>Resultado esperado; se muestra con un decimal.</span></div>
+        <div class="result"><p>Sesiones proyectadas</p><strong id="projectedSessions"></strong><span>Sesiones necesarias bajo la conversión seleccionada.</span></div>
+        <div class="result"><p>Inversión proyectada</p><strong id="projectedInvestment"></strong><span id="investmentComparison"></span></div>
+      </div>
+      <div class="formula-flow"><span><b>Inversión</b> ÷ costo = <b>Transacciones</b></span><i>·</i><span><b>Transacciones</b> ÷ conversión = <b>Sesiones</b></span><i>·</i><span><b>Transacciones</b> × ticket = <b>Ventas web</b></span></div>
+      <div class="decision"><strong id="decisionTitle"></strong><p id="decisionText"></p></div>
+    </article>
+  </section>
 
-    <section class="kpis">
-      <article class="kpi primary"><p>Sesiones proyectadas 2026</p><strong id="fySessions"></strong><span>Agosto estimado + Sep–Dic baseline</span></article>
-      <article class="kpi"><p>Transacciones May–Jul</p><strong id="fyKeyEvents"></strong><span id="fyKeyEventsNote"></span></article>
-      <article class="kpi"><p>Conversión proyectada Sep–Dic</p><strong id="projectedCvr"></strong><span id="projectedCvrNote"></span></article>
-      <article class="kpi"><p>Agosto parcial · 1–19</p><strong>1,682</strong><span>Transacciones remapeadas desde “Eventos clave”</span></article>
-    </section>
+  <section class="panel monthly">
+    <div class="panel-head"><div><p class="kicker">SET–DIC</p><h2>Plan mensual frente al escenario</h2><p>Los cuatro meses usan la misma conversión, ticket promedio y costo de adquisición.</p></div><span class="status" style="box-shadow:none"><i style="background:var(--blue2)"></i>Límite 5.00%</span></div>
+    <div class="month-grid" id="monthGrid"></div>
+  </section>
 
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">GA4 · OBSERVADO Y PROYECCIÓN</p><h2>Resultado mensual hasta diciembre</h2></div><div class="switch" id="analyticsMetricButtons"></div></div>
-      <div class="chart-scroll" tabindex="0" aria-label="Gráfico desplazable de evolución GA4"><div class="chart" id="analyticsChart" aria-label="Evolución GA4 y proyección hasta diciembre"></div></div>
-      <div class="legend"><span><i></i>Observado Ene–Jul</span><span><i class="break"></i>Agosto 1–19 · ruptura semántica</span><span><i class="forecast"></i>Sep–Dic proyectado</span></div>
-      <div class="note-strip"><span><b>Baseline:</b> mediana May–Jul = 28,841 sesiones/mes</span><span id="scenarioNote"></span></div>
-    </section>
+  <section class="decision-grid">
+    <article><span>Objetivo</span><p>Estimar la capacidad del presupuesto bajo <b>supuestos editables</b>.</p></article>
+    <article><span>Evidencia</span><p>Baseline GA4 mayo–julio y plan comercial septiembre–diciembre.</p></article>
+    <article><span>Riesgo</span><p>Transacciones y ticket aún no están conciliados con órdenes comerciales.</p></article>
+    <article><span>Validación</span><p>Comparar mensualmente sesiones, órdenes, ventas e inversión observadas.</p></article>
+  </section>
 
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">BASELINE DE GESTIÓN · MAY–JUL</p><h2>Productividad por canal</h2></div><span class="pill">87,615 sesiones · 140 Transacciones</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Canal</th><th>Sesiones</th><th>Share sesiones</th><th>Transacciones</th><th>Share trans.</th><th>Conversión</th><th>Engagement</th><th>Lectura</th></tr></thead><tbody id="analyticsChannelBody"></tbody></table></div>
-      <p style="color:var(--muted);font-size:9px;line-height:1.6">Conversión = Transacciones / Sesiones. Es una métrica GA4 reportada y no sustituye órdenes comerciales deduplicadas. La “Tasa de evento clave de sesión” exportada por GA4 tiene otra definición y no se mezcla con este cálculo.</p>
-    </section>
+  <details><summary>Fuentes, fórmulas y limitaciones</summary><div>
+    <p><b>Baseline observado May–Jul:</b> 87,615 sesiones, 140 Transacciones, S/259,826.34 de ingreso GA4 y S/52,488 de inversión planificada. Conversión 0.16%, ingreso GA4 por transacción S/1,855.90 y costo de adquisición por transacción S/374.91.</p>
+    <p><b>Fórmulas:</b> Transacciones = inversión ÷ costo de adquisición. Sesiones = Transacciones ÷ conversión. Ventas = Transacciones × ticket promedio.</p>
+    <p><b>Presets:</b> +25% y +50% aplican una mejora relativa a la conversión y reducen el costo de adquisición bajo el supuesto de costo por sesión constante. Los valores siguen siendo editables.</p>
+    <p><b>Limitaciones:</b> el “ticket promedio” usa ingreso GA4 por transacción y está pendiente de conciliación comercial. El costo usa inversión planificada y no es CAC. Agosto 1–19 se excluye por ruptura de definición. Esta es una proyección condicionada, no forecast, ROAS ni garantía.</p>
+    <p><b>Fuentes:</b> exportaciones GA4 WYNK mayo–julio 2026 y `Objetivos de venta + INVERSION.csv`. Ingesta y validación: 22/08/2026.</p>
+  </div></details>
 
-    <section class="findings">
-      <article class="finding"><p class="kicker">MEJORA OBSERVADA</p><h3>Julio vs. junio</h3><strong>+0.128 pp conversión</strong><p>La conversión pasó de 0.097% a 0.225%; las Transacciones crecieron 182.1% y las sesiones 21.8%. Es una variación observada, no causalidad.</p></article>
-      <article class="finding"><p class="kicker">MIX DE CANALES</p><h3>Volumen no equivale a productividad</h3><strong>62.4% de sesiones</strong><p>Cross-network + Paid Social aportaron 62.4% de sesiones May–Jul y 23.6% de Transacciones. Paid Search aportó 15.4% y 36.4%, respectivamente.</p></article>
-      <article class="finding"><p class="kicker">RUPTURA DE MEDICIÓN</p><h3>Agosto no entra al baseline</h3><strong>14.299% aparente</strong><p>El remapeo solicitado de “Eventos clave” produce una conversión no comparable con enero–julio. Debe validarse la configuración GA4 antes de usar agosto para decisiones.</p></article>
-    </section>
-
-    <details><summary>Metodología, supuestos y fuentes de Analytics</summary><div><p><b>Fuente:</b> ocho exportaciones GA4 “Adquisición de tráfico: Grupo de canales principal de la sesión”, cuenta Wynk, propiedad Wynk.pe. Enero–julio se tratan como meses completos; enero depende del nombre del archivo. Agosto cubre 1–19. Ingesta y validación: 22/08/2026.</p><p><b>Baseline:</b> resúmenes por canal May–Jul = 87,615 sesiones, 140 Transacciones e ingreso GA4 de S/259,826.34. Mediana mensual = 28,841 sesiones; conversión = 0.159790%. Esta versión difiere de la capa anterior en +296 sesiones y +S/0.39 por usar otro grano de exportación.</p><p><b>Escenarios:</b> aplican mejoras relativas de 0%, 10%, 25% o 50% a Transacciones / Sesiones. Agosto se excluye porque “Eventos clave” se remapea a “Transacciones” por definición solicitada, pero no se ha probado equivalencia con compras u órdenes únicas.</p></div></details>
-  </div>
-
-  <div class="tab-view" id="networksView" role="tabpanel" aria-labelledby="tab-networks">
-    <section class="callout"><div class="n">02</div><div><p class="kicker">SEARCH VS. PMAX</p><h2>En agosto, PMax concentra 77.8% de las conversiones reportadas con 49.2% de la inversión.</h2></div><p>La diferencia es una <b>señal para investigar</b>, no evidencia suficiente para mover presupuesto: el corte es parcial y las acciones de conversión no están identificadas.</p></section>
-
-    <section class="kpis">
-      <article class="kpi primary"><p>PMax · participación conv.</p><strong>77.8%</strong><span>14 de 18 · agosto parcial</span></article>
-      <article class="kpi"><p>PMax · participación inversión</p><strong>49.2%</strong><span>US$615.77 de US$1,252.11</span></article>
-      <article class="kpi"><p>Search · CPA agosto</p><strong>US$159.09</strong><span>4 conversiones reportadas</span></article>
-      <article class="kpi"><p>PMax · CPA agosto</p><strong>US$43.98</strong><span>14 conversiones reportadas</span></article>
-    </section>
-
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">COMPARACIÓN MENSUAL</p><h2>Resultado por red</h2></div><div class="switch" id="networkMetricButtons"></div></div>
-      <div class="chart-scroll" tabindex="0" aria-label="Gráfico desplazable de comparación mensual por red"><div class="chart" id="networkChart" aria-label="Comparación mensual por red"></div></div>
-      <div class="legend"><span><i></i>Search</span><span><i class="partial"></i>PMax</span></div>
-      <div class="note-strip"><span id="networkChartNote"></span><span>Interacciones PMax pueden superar clics; no son métricas equivalentes.</span></div>
-    </section>
-
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">SERIE COMPLETA</p><h2>Inversión, conversiones y CPA</h2></div><span class="pill">Dato observado</span></div>
-      <div class="table-wrap"><table><thead><tr><th>Periodo</th><th>Search inversión</th><th>Search conv.</th><th>Search CPA</th><th>PMax inversión</th><th>PMax conv.</th><th>PMax CPA</th></tr></thead><tbody id="networkBody"></tbody></table></div>
-    </section>
-
-    <section class="decisions">
-      <article class="decision"><p class="kicker">DEFENDER CON CONTROL</p><h3>Search</h3><strong>US$89.75 CPA en julio</strong><p>Revisar términos, Brand/Generic, ranking y acciones de conversión. Agosto sube a US$159.09, pero el periodo está incompleto.</p></article>
-      <article class="decision"><p class="kicker">VALIDAR ANTES DE ESCALAR</p><h3>Performance Max</h3><strong>US$43.98 CPA en agosto</strong><p>Confirmar conversiones, grupos de recursos, feed, productos, stock y solapamiento con Search antes de aumentar presupuesto.</p></article>
-      <article class="decision"><p class="kicker">PRUEBA CONTROLADA</p><h3>Comparación común</h3><strong>Un periodo completo</strong><p>Evaluar ambas redes con la misma conversión canónica, sin cambios simultáneos no documentados y con aprobación humana.</p></article>
-    </section>
-
-    <details><summary>Alcance de la lectura por red</summary><div><p><b>Fuente:</b> totales nativos “Búsqueda” y “Máximo rendimiento” en GADS-APR-1 a GADS-AUG-1, extraídos el 21/08/2026.</p><p>El detalle de anuncios entregado corresponde a Search. No existe detalle de assets o grupos de recursos de PMax, valor de conversión ni términos de búsqueda en esta cobertura.</p></div></details>
-  </div>
-
-  <div class="tab-view" id="qualityView" role="tabpanel" aria-labelledby="tab-quality">
-    <section class="callout"><div class="n">03</div><div><p class="kicker">CALIDAD Y GOBERNANZA</p><h2>Los ocho archivos GA4 concilian matemáticamente; la brecha está en la definición de Transacciones usada en agosto.</h2></div><p>La nueva capa normaliza 83 filas por canal y pasa 98 controles de conciliación mensual y eventos por sesión. Agosto queda excluido del baseline.</p></section>
-
-    <section class="kpis">
-      <article class="kpi primary"><p>Cobertura Analytics</p><strong>8 cortes</strong><span>Ene–Jul completos · Ago parcial</span></article>
-      <article class="kpi"><p>Controles ejecutados GA4</p><strong>98 / 98</strong><span>24 conciliaciones + 74 eventos/sesión</span></article>
-      <article class="kpi"><p>Conciliación Google Ads</p><strong>5 / 5</strong><span>Cuenta = Search + PMax</span></article>
-      <article class="kpi"><p>Estado de publicación</p><strong style="font-size:22px">Revisión humana</strong><span>No compartir aún con cliente</span></article>
-    </section>
-
-    <section class="validation-grid">
-      <article class="card"><div class="card-head"><div><p class="kicker">VALIDACIÓN POR FUENTE</p><h2>Calidad de datos</h2></div><span class="signal warn">Human review</span></div><div class="score">2×</div><div class="validation-list"><div class="validation-item"><span>01</span><section><b>Analytics: ocho periodos legibles</b><p>Cuenta Wynk, propiedad Wynk.pe; enero–julio completos y agosto 1–19 parcial.</p></section></div><div class="validation-item"><span>02</span><section><b>Analytics: controles ejecutados</b><p>24 conciliaciones mensuales y 74 verificaciones de eventos por sesión sin fallas.</p></section></div><div class="validation-item"><span>03</span><section><b>Google Ads: cinco pares equivalentes</b><p>Encabezados, 98 filas, valores y totales coinciden entre codificaciones.</p></section></div><div class="validation-item"><span>04</span><section><b>Brecha semántica</b><p>Eventos clave, conversiones Ads y órdenes comerciales no son todavía una misma métrica.</p></section></div></div></article>
-      <article class="card"><div class="card-head"><div><p class="kicker">RECOMENDACIONES</p><h2>Próximas decisiones</h2></div></div><div class="recs"><div class="rec"><span>01</span><section><b>Definir conversión canónica</b><p>Confirmar evento de compra, transacción única, moneda, ventana y ajustes; conciliar GA4, Ads y fuente comercial.</p><small>Analytics + Ecommerce · inmediato</small></section></div><div class="rec"><span>02</span><section><b>Validar la mejora de julio</b><p>Comprobar si la mejora se sostiene en un periodo completo y probar oferta, canal y experiencia sobre la conversión base de 0.159790%.</p><small>Growth + Ecommerce · Sep–Oct</small></section></div><div class="rec"><span>03</span><section><b>Optimizar el mix de adquisición</b><p>Mejorar Cross-network y Paid Social antes de escalar; proteger Search sin atribuir causalidad.</p><small>Paid Media + Analytics · próximo mes completo</small></section></div></div></article>
-    </section>
-
-    <section class="card"><div class="card-head"><div><p class="kicker">INVENTARIO DE ANUNCIOS SEARCH</p><h2>Cobertura y estado visible al exportar</h2></div><span class="pill">98 filas por corte</span></div><div class="table-wrap"><table><thead><tr><th>Periodo</th><th>Filas con impresiones</th><th>Filas sin impresiones</th><th>Habilitadas no aptas</th><th>Impresiones asociadas</th><th>Firmas repetidas</th></tr></thead><tbody id="qualityBody"></tbody></table></div><p style="color:var(--muted);font-size:9px;line-height:1.6">El estado puede reflejar la situación al momento de exportación junto con métricas históricas. No se atribuye gasto o desempeño al estado sin historial de cambios. “Firmas repetidas” usa URL final + Título 1 + Campaña y no implica duplicado inválido.</p></section>
-
-    <section class="card"><div class="card-head"><div><p class="kicker">PLAN DE VALIDACIÓN</p><h2>Del reporte técnico a una decisión de negocio</h2></div></div><div class="roadmap"><article><span>0–7 días</span><h3>Cerrar semántica</h3><p>Confirmar por qué agosto entrega “Eventos clave” en lugar de Transacciones comparables.</p><b>Analytics + Ecommerce</b></article><article><span>7–21 días</span><h3>Conciliar órdenes</h3><p>Comparar Transacciones GA4 por mes contra órdenes comerciales deduplicadas y revenue aprobado.</p><b>Analytics + Ecommerce</b></article><article><span>Próximo mes completo</span><h3>Calibrar el modelo</h3><p>Contrastar conversión, costo por sesión e ingreso por transacción proyectados contra observados.</p><b>Growth + Paid Media</b></article></div></section>
-
-    <details><summary>Registro de fuentes y limitaciones</summary><div><p><b>Analytics:</b> ocho archivos “Adquisición de tráfico” de Wynk.pe, enero-agosto 2026; capa `wynk_ga4_channel_history_2026.csv`; ingesta 22/08/2026. <b>Google Ads:</b> Anuncios google ads_abril1.csv a agosto1.csv. <b>Plan:</b> Objetivos de venta + INVERSION.csv.</p><p><b>Limitaciones:</b> enero infiere fecha desde el nombre; agosto es parcial 1–19 y remapea “Eventos clave” a “Transacciones”; no hay órdenes comerciales deduplicadas, gasto real alineado ni detalle de assets PMax. Existen dos versiones de inversión. Las proyecciones son escenarios condicionados y no garantías.</p></div></details>
-  </div>
-
-  <div class="tab-view" id="targetsView" role="tabpanel" aria-labelledby="tab-targets">
-    <section class="callout"><div class="n">04</div><div><p class="kicker">OBJETIVOS E INVERSIÓN · MODELO CONDICIONADO</p><h2>La conversión determina cuánta inversión sería necesaria para alcanzar la meta mensual bajo costos constantes.</h2></div><p>En el escenario <b id="calloutScenario"></b>, la inversión requerida Sep–Dic suma <b id="calloutAggregate"></b>; noviembre requiere <b id="calloutNovember"></b> y diciembre <b id="calloutDecember"></b>.</p></section>
-
-    <section class="scenario-head"><div><p class="kicker">SENSIBILIDAD DE CONVERSIÓN</p><h2>Conversión proyectada <span id="targetScenarioName"></span></h2></div><div class="switch scenario-switch" id="targetScenarioButtons"></div></section>
-
-    <section class="kpis">
-      <article class="kpi primary"><p>Objetivo web bruto Sep–Dic</p><strong id="targetWebTotal"></strong><span>Meta del plan · incluye IGV según definición pendiente</span></article>
-      <article class="kpi"><p>Inversión planificada</p><strong id="targetInvestmentTotal"></strong><span id="targetInvestmentRatio"></span></article>
-      <article class="kpi"><p>Ingreso GA4 / transacción</p><strong id="targetRevenuePerTransaction"></strong><span>No es ticket promedio validado</span></article>
-      <article class="kpi"><p>Costo de adquisición por transacción</p><strong id="targetAcquisitionCost"></strong><span>Plan May–Jul · no es CAC ni CPA observado</span></article>
-    </section>
-
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">CALCULADORA DE INVERSIÓN</p><h2>Define el mes y mueve el ratio hasta 5%</h2></div><div class="switch" id="budgetMonthButtons"></div></div>
-      <div class="calculator-controls"><label>Ratio de inversión: <b id="budgetRateLabel">4.77%</b><input id="budgetRateInput" type="range" min="0" max="5" step="0.01" value="4.77" aria-label="Ratio de inversión entre cero y cinco por ciento"></label><div><span class="kicker">REGLA FIJA DE DISTRIBUCIÓN</span><b>38% · 38% · 5% · 8% · 4% · 7%</b></div></div>
-      <div class="calculator-output"><span><small>Venta total</small><b id="calcSales"></b></span><span><small>Inversión elegida</small><b id="calcInvestment"></b></span><span><small>Tope 5%</small><b id="calcCap"></b></span><span id="calcStatusCard" class="ok"><small>Estado y holgura</small><b id="calcHeadroom"></b></span></div>
-      <div class="allocation-list" id="calculatorAllocationList"></div>
-      <p style="color:var(--muted);font-size:9px;line-height:1.6">La calculadora distribuye la inversión seleccionada; no cambia el archivo fuente ni constituye aprobación presupuestaria.</p>
-    </section>
-
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">INVERSIÓN REQUERIDA · SET–DIC</p><h2>Transacciones, sesiones y costo condicionado</h2></div><span class="pill" id="aggregateAttainment"></span></div>
-      <div class="goal-list" id="targetGoalList" aria-live="polite"></div>
-      <div class="note-strip"><span id="eventsFormula"></span><span><b>Inversión requerida:</b> transacciones requeridas × costo proyectado</span></div>
-    </section>
-
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">REGLA DE INVERSIÓN</p><h2>Plan mensual frente al límite de 5%</h2></div><span class="pill" id="capStatusSummary"></span></div>
-      <div class="table-wrap"><table><thead><tr><th>Mes</th><th>Venta total</th><th>Tope 5%</th><th>Inversión</th><th>Ratio real</th><th>Holgura</th><th>Estado</th></tr></thead><tbody id="capBody"></tbody></table></div>
-      <p id="capException" style="color:var(--muted);font-size:9px;line-height:1.6"></p>
-    </section>
-
-    <section class="card">
-      <div class="card-head"><div><p class="kicker">ASIGNACIÓN REGLA FIJA · SET–DIC</p><h2>Seis líneas de inversión planificada</h2></div><span class="pill" id="allocationPlanTotal"></span></div>
-      <div class="allocation-list" id="allocationList"></div>
-      <div class="table-wrap" style="margin-top:15px"><table><thead><tr><th>Línea</th><th>Set</th><th>Oct</th><th>Nov</th><th>Dic</th><th>Set–Dic</th></tr></thead><tbody id="campaignPlanBody"></tbody></table></div>
-      <p style="color:var(--muted);font-size:9px;line-height:1.6">Esta distribución aplica la regla 38/38/5/8/4/7 proporcionada para la nueva calculadora. Reemplaza visualmente el mix variable del archivo anterior, pero permanece en estado borrador hasta aprobación.</p>
-    </section>
-
-    <section class="findings">
-      <article class="finding"><p class="kicker">BASELINE</p><h3>May–Jul observado</h3><strong id="baselineRevenuePerTransaction"></strong><p>Ingreso GA4 por transacción: S/259,826.34 / 140. No es ticket promedio comercial validado.</p></article>
-      <article class="finding"><p class="kicker">BRECHA PRINCIPAL</p><h3>Noviembre</h3><strong id="novemberGap"></strong><p>Para caber en el plan seleccionado, noviembre requiere una mejora relativa mínima de 40.3% en conversión; diciembre requiere 21.0%.</p></article>
-      <article class="finding"><p class="kicker">CONTROL PRESUPUESTARIO</p><h3>Holgura Sep–Dic</h3><strong id="planHeadroom"></strong><p>El plan queda bajo 5% en los cuatro meses futuros. No implica que la inversión sea suficiente ni incremental.</p></article>
-    </section>
-
-    <section class="caution"><h3>Supuestos y riesgos que requieren aprobación</h3><p>El modelo usa la meta web bruta como objetivo de cálculo y supone PEN, costo planificado por sesión constante e ingreso GA4 por transacción constante. Mejorar conversión reduce matemáticamente el costo por transacción solo bajo ese supuesto; no demuestra causalidad. Las Transacciones GA4 no están conciliadas con órdenes comerciales; agosto tiene una ruptura de definición; existe otra versión de inversión Sep–Dic; y no hay curva marginal que pruebe eficiencia al escalar. Los resultados son sensibilidades, no forecast comercial, ROAS ni garantía.</p></section>
-
-    <details><summary>Fórmulas, fuentes y trazabilidad</summary><div><p><b>Baseline May–Jul:</b> conversión = 140 / 87,615 = 0.159790%. Ingreso GA4 por transacción = S/259,826.34 / 140 = S/1,855.90. Costo planificado por sesión = S/52,488 / 87,615 = S/0.599076. Costo de adquisición por transacción = S/52,488 / 140 = S/374.91.</p><p><b>Proyección:</b> transacciones requeridas = meta web bruta / ingreso GA4 por transacción. Conversión proyectada = conversión base × (1 + mejora relativa). Costo de adquisición por transacción proyectado = costo por sesión / conversión proyectada. Inversión requerida = transacciones requeridas × costo de adquisición por transacción proyectado.</p><p><b>Fuentes:</b> archivos GA4 por canal mayo-julio 2026 y `Objetivos de venta + INVERSION.csv`. Ingesta y validación: 22/08/2026. Estado: revisión humana requerida.</p></div></details>
-  </div>
-
-  <footer><span>GA4 integrado y validado el 22 de agosto de 2026 · Ads al 21</span><span id="footerDecision">Estado: revisión humana requerida antes de compartir con cliente.</span></footer>
+  <footer><span>Modelo actualizado el 22 de agosto de 2026</span><span>No compartir con cliente sin aprobación humana.</span></footer>
 </div></main>
 
 <script>
-const analyticsActual=[
-  {month:"Ene",sessions:101099,transactions:2,cvr:2/101099*100,engagement:null,status:"actual"},
-  {month:"Feb",sessions:12811,transactions:5,cvr:5/12811*100,engagement:46.187,status:"actual"},
-  {month:"Mar",sessions:10318,transactions:11,cvr:11/10318*100,engagement:72.999,status:"actual"},
-  {month:"Abr",sessions:16679,transactions:60,cvr:60/16679*100,engagement:55.297,status:"actual"},
-  {month:"May",sessions:23639,transactions:33,cvr:33/23639*100,engagement:56.111,status:"actual"},
-  {month:"Jun",sessions:28841,transactions:28,cvr:28/28841*100,engagement:63.306,status:"actual"},
-  {month:"Jul",sessions:35135,transactions:79,cvr:79/35135*100,engagement:54.143,status:"actual"},
-  {month:"Ago*",sessions:11763,transactions:1682,cvr:1682/11763*100,engagement:55.845,status:"break"}
+const baseline={conversion:140/87615*100,ticket:259826.34/140,cpa:52488/140,costPerSession:52488/87615};
+const months=[
+  {key:"Set",name:"septiembre",webTarget:84599,totalTarget:434599,investment:20745},
+  {key:"Oct",name:"octubre",webTarget:86613,totalTarget:436613,investment:21048},
+  {key:"Nov",name:"noviembre",webTarget:194783,totalTarget:594783,investment:28054},
+  {key:"Dic",name:"diciembre",webTarget:237683,totalTarget:837683,investment:39698}
 ];
-const analyticsBaseline={sessions:28841,cvr:140/87615*100,transactions:140};
-const analyticsScenarios={
-  hold:{label:"Continuidad",short:"0%",uplift:0},
-  improve10:{label:"Mejora +10%",short:"+10%",uplift:.10},
-  improve25:{label:"Mejora +25%",short:"+25%",uplift:.25},
-  improve50:{label:"Mejora +50%",short:"+50%",uplift:.50}
-};
-const analyticsChannels=[
-  ["Cross-network",27864,31.8,16,11.4,.057422,43.7,"Optimizar señal"],
-  ["Paid Social",26783,30.6,17,12.1,.063473,56.8,"Optimizar conversión"],
-  ["Paid Search",13496,15.4,51,36.4,.377890,77.0,"Defender + validar"],
-  ["Organic Search",6442,7.4,23,16.4,.357032,66.6,"Fortalecer"],
-  ["Direct",6327,7.2,20,14.3,.316106,66.1,"Proteger experiencia"],
-  ["Organic Social",2217,2.5,1,.7,.045106,74.2,"Revisar intención"],
-  ["Referral",2075,2.4,5,3.6,.240964,80.2,"Validar referidos"],
-  ["Unassigned",1659,1.9,4,2.9,.241109,39.5,"Corregir atribución"],
-  ["Email",673,.8,3,2.1,.445765,46.2,"Muestra pequeña"],
-  ["Otros canales",79,.1,0,0,0,53.2,"Sin transacciones"]
-];
-const targetBaseline={sessions:87615,transactions:140,revenue:259826.34,investment:52488,conversion:140/87615,revenuePerTransaction:259826.34/140,costPerSession:52488/87615,acquisitionCost:52488/140};
-const targetScenarios={
-  hold:{label:"Continuidad",short:"0%",uplift:0},
-  improve10:{label:"Mejora +10%",short:"+10%",uplift:.10},
-  improve25:{label:"Mejora +25%",short:"+25%",uplift:.25},
-  improve50:{label:"Mejora +50%",short:"+50%",uplift:.50}
-};
-const targetMonths=[
-  {month:"Set",salaverry:220000,rambla:130000,webGross:84599,investment:20745},
-  {month:"Oct",salaverry:220000,rambla:130000,webGross:86613,investment:21048},
-  {month:"Nov",salaverry:250000,rambla:150000,webGross:194783,investment:28054},
-  {month:"Dic",salaverry:350000,rambla:250000,webGross:237683,investment:39698}
-].map(row=>({...row,sales:row.salaverry+row.rambla+row.webGross}));
-const capMonths=[
-  ["Abr",443054,6732],["May",362879,12843],["Jun",343509,13219],["Jul",617295,26426],["Ago",399765,20017]
-].concat(targetMonths.map(row=>[row.month,row.sales,row.investment]));
-const campaignPlan=[
-  {name:"Performance conversión 1",share:.38,color:"#398dcb"},
-  {name:"Performance conversión 2",share:.38,color:"#628cca"},
-  {name:"AON Rambla",share:.05,color:"#a17fc0"},
-  {name:"AON Salaverry",share:.08,color:"#7a89c8"},
-  {name:"AON web Wynk",share:.04,color:"#b170b5"},
-  {name:"AON interacción redes",share:.07,color:"#8f85c5"}
-];
-const monthly=[
-  {month:"Abr*",period:"15–30 abr",coverage:"Parcial",impressions:195859,clicks:11605,interactions:11657,cost:1293.01,conversions:42.10,ctr:5.93,cpc:.11,cpa:30.71,status:"partial",search:{cost:1153.98,conversions:37.43,cpa:30.83},pmax:{cost:139.03,conversions:4.67,cpa:29.78}},
-  {month:"May",period:"Mayo",coverage:"Completo",impressions:343878,clicks:15745,interactions:22538,cost:2667.87,conversions:24.07,ctr:4.58,cpc:.17,cpa:110.85,status:"actual",search:{cost:2301.01,conversions:19.57,cpa:117.57},pmax:{cost:366.86,conversions:4.50,cpa:81.60}},
-  {month:"Jun",period:"Junio",coverage:"Completo",impressions:330531,clicks:16561,interactions:24009,cost:2191.23,conversions:22.87,ctr:5.01,cpc:.13,cpa:95.80,status:"actual",search:{cost:1710.19,conversions:16,cpa:106.89},pmax:{cost:481.03,conversions:6.87,cpa:69.99}},
-  {month:"Jul",period:"Julio",coverage:"Completo",impressions:713823,clicks:24130,interactions:57330,cost:4413.67,conversions:50.96,ctr:3.38,cpc:.18,cpa:86.61,status:"actual",search:{cost:3410.59,conversions:38,cpa:89.75},pmax:{cost:1003.08,conversions:12.96,cpa:77.39}},
-  {month:"Ago*",period:"1–21 ago",coverage:"Parcial",impressions:367952,clicks:8541,interactions:57962,cost:1252.11,conversions:18,ctr:2.32,cpc:.15,cpa:69.56,status:"partial",search:{cost:636.34,conversions:4,cpa:159.09},pmax:{cost:615.77,conversions:14,cpa:43.98}}
-];
-const quality=[
-  ["15–30 abr",17,81,38,733,26],["Mayo",29,69,38,3852,26],["Junio",18,80,38,15766,26],["Julio",34,64,38,52124,26],["1–21 ago",8,90,38,3978,26]
-];
-const palette={actual:"linear-gradient(180deg,#398dcb,#628cca)",partial:"linear-gradient(180deg,#8f85c5,#b170b5)",break:"linear-gradient(180deg,#b77b42,#8c5c28)",estimate:"linear-gradient(180deg,#628cca,#8f85c5)",forecast:"linear-gradient(180deg,#8f85c5,#b170b5)",search:"linear-gradient(180deg,#398dcb,#628cca)",pmax:"linear-gradient(180deg,#8f85c5,#b170b5)"};
-const usd=(value,digits=2)=>new Intl.NumberFormat("es-PE",{style:"currency",currency:"USD",minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value).replace("USD","US$");
-const pen=(value,digits=2)=>new Intl.NumberFormat("es-PE",{style:"currency",currency:"PEN",minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value);
-const compactUsd=value=>"US$"+new Intl.NumberFormat("es-PE",{notation:"compact",maximumFractionDigits:1}).format(value);
+const presets={base:{label:"Base",conversion:baseline.conversion,cpa:baseline.cpa},plus25:{label:"+25%",conversion:baseline.conversion*1.25,cpa:baseline.cpa/1.25},plus50:{label:"+50%",conversion:baseline.conversion*1.5,cpa:baseline.cpa/1.5}};
+let selectedMonth="Set",selectedPreset="plus25",state={investment:months[0].investment,conversion:presets.plus25.conversion,ticket:baseline.ticket,cpa:presets.plus25.cpa};
+const pen=(value,digits=0)=>new Intl.NumberFormat("es-PE",{style:"currency",currency:"PEN",minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value);
 const num=(value,digits=0)=>new Intl.NumberFormat("es-PE",{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(value);
-const compact=value=>new Intl.NumberFormat("es-PE",{notation:"compact",maximumFractionDigits:1}).format(value);
-const requestedTab=new URLSearchParams(window.location.search).get("tab");
-const requestedTargetScenario=new URLSearchParams(window.location.search).get("conversion");
-let currentTab=["overview","networks","quality","targets"].includes(requestedTab)?requestedTab:"overview",analyticsScenario="improve25",analyticsMetric="transactions",networkMetric="cpa",targetScenario=Object.hasOwn(targetScenarios,requestedTargetScenario)?requestedTargetScenario:"improve25",budgetMonth=targetMonths[0].month,budgetRate=targetMonths[0].investment/targetMonths[0].sales*100;
-
-function createButtons(id,items,current,onChange){const element=document.getElementById(id);element.innerHTML=items.map(item=>`<button class="${item.key===current?"active":""}" aria-pressed="${item.key===current}" data-key="${item.key}">${item.label}</button>`).join("");element.querySelectorAll("button").forEach(button=>button.onclick=()=>onChange(button.dataset.key));}
-function metricLabel(metric,value){if(metric==="cost")return compactUsd(value);if(metric==="conversions"||metric==="transactions")return num(value,1);if(metric==="cpa")return usd(value);if(metric==="sessions")return compact(value);return num(value,3)+"%";}
-
-function analyticsProjection(){const scenario=analyticsScenarios[analyticsScenario],cvr=analyticsBaseline.cvr*(1+scenario.uplift),transactions=analyticsBaseline.sessions*cvr/100,forecast=["Sep","Oct","Nov","Dic"].map(month=>({month,sessions:analyticsBaseline.sessions,transactions,cvr,status:"forecast"}));return {scenario,cvr,transactions,series:analyticsActual.concat(forecast)};}
-function renderAnalytics(){const projection=analyticsProjection(),series=projection.series,max=Math.max(...series.map(row=>row[analyticsMetric]))*1.2,actualSessions=analyticsActual.slice(0,7).reduce((sum,row)=>sum+row.sessions,0),augustFullSessions=analyticsActual[7].sessions/19*31,fySessions=actualSessions+augustFullSessions+analyticsBaseline.sessions*4,holdTransactions=analyticsBaseline.sessions*analyticsBaseline.cvr/100*4;
-  document.getElementById("scenarioName").textContent=projection.scenario.short;
-  document.getElementById("fySessions").textContent=compact(fySessions);
-  document.getElementById("fyKeyEvents").textContent=num(analyticsBaseline.transactions);
-  document.getElementById("fyKeyEventsNote").textContent=`33 May · 28 Jun · 79 Jul`;
-  document.getElementById("projectedCvr").textContent=num(projection.cvr,3)+"%";
-  document.getElementById("projectedCvrNote").textContent=`${projection.scenario.short} relativo sobre baseline 0.159790%`;
-  document.getElementById("scenarioNote").innerHTML=`<b>${projection.scenario.label}:</b> ${num(projection.transactions*4)} Transacciones Sep–Dic · ${projection.scenario.uplift?"+"+num(projection.transactions*4-holdTransactions)+" vs. continuidad":"sin uplift"}`;
-  document.getElementById("analyticsChart").innerHTML=series.map(row=>{const height=Math.max(3,row[analyticsMetric]/max*100),value=metricLabel(analyticsMetric,row[analyticsMetric]);return `<div class="bar-wrap"><span class="tip" style="--h:${height}%">${value}</span><div class="bar" style="height:${height}%;background:${palette[row.status]}" title="${row.month}: ${value}"></div><label>${row.month}</label></div>`;}).join("");
-}
-function renderNetworkChart(){const values=monthly.flatMap(row=>[row.search[networkMetric],row.pmax[networkMetric]]),max=Math.max(...values)*1.2;document.getElementById("networkChart").innerHTML=monthly.flatMap(row=>[["search",row.search],["pmax",row.pmax]]).map(([network,data],index)=>{const row=monthly[Math.floor(index/2)],height=Math.max(3,data[networkMetric]/max*100),label=index%2===0?row.month:"";return `<div class="bar-wrap"><span class="tip" style="--h:${height}%">${metricLabel(networkMetric,data[networkMetric])}</span><div class="bar" style="height:${height}%;background:${palette[network]}" title="${row.period} · ${network}: ${metricLabel(networkMetric,data[networkMetric])}"></div><label>${label}</label></div>`;}).join("");document.getElementById("networkChartNote").innerHTML=`<b>Métrica:</b> ${networkMetric==="cost"?"inversión":networkMetric==="conversions"?"conversiones reportadas":"CPA reportado"}`;}
-function renderTargets(){const scenario=targetScenarios[targetScenario],projectedConversion=targetBaseline.conversion*(1+scenario.uplift),projectedAcquisitionCost=targetBaseline.costPerSession/projectedConversion,rows=targetMonths.map(row=>{const requiredTransactions=row.webGross/targetBaseline.revenuePerTransaction,requiredSessions=requiredTransactions/projectedConversion,requiredInvestment=requiredTransactions*projectedAcquisitionCost,coverage=row.investment/requiredInvestment*100,gap=row.investment-requiredInvestment;return {...row,requiredTransactions,requiredSessions,requiredInvestment,coverage,gap};}),totalRequired=rows.reduce((sum,row)=>sum+row.requiredInvestment,0),totalTarget=rows.reduce((sum,row)=>sum+row.webGross,0),totalInvestment=rows.reduce((sum,row)=>sum+row.investment,0),totalSales=rows.reduce((sum,row)=>sum+row.sales,0);
-  document.getElementById("targetScenarioName").textContent=`${scenario.label} · ${num(projectedConversion*100,3)}%`;
-  document.getElementById("targetRevenuePerTransaction").textContent=pen(targetBaseline.revenuePerTransaction);
-  document.getElementById("targetAcquisitionCost").textContent=pen(projectedAcquisitionCost);
-  document.getElementById("baselineRevenuePerTransaction").textContent=pen(targetBaseline.revenuePerTransaction);
-  document.getElementById("eventsFormula").innerHTML=`<b>Transacciones requeridas:</b> meta web ÷ ${pen(targetBaseline.revenuePerTransaction)}`;
-  document.getElementById("targetWebTotal").textContent=pen(totalTarget,0);
-  document.getElementById("targetInvestmentTotal").textContent=pen(totalInvestment,0);
-  document.getElementById("targetInvestmentRatio").textContent=`${num(totalInvestment/totalSales*100,2)}% de ventas totales · tope 5%`;
-  document.getElementById("aggregateAttainment").textContent=`${pen(totalRequired,0)} requeridos · plan ${pen(totalInvestment,0)}`;
-  document.getElementById("calloutScenario").textContent=scenario.label.toLowerCase();
-  document.getElementById("calloutAggregate").textContent=pen(totalRequired,0);
-  document.getElementById("calloutNovember").textContent=pen(rows[2].requiredInvestment,0);
-  document.getElementById("calloutDecember").textContent=pen(rows[3].requiredInvestment,0);
-  document.getElementById("novemberGap").textContent=rows[2].gap>=0?`Holgura ${pen(rows[2].gap)}`:`Faltan ${pen(Math.abs(rows[2].gap))}`;
-  document.getElementById("targetGoalList").innerHTML=rows.map(row=>`<article class="goal-row"><strong>${row.month}</strong><div class="goal-track" role="progressbar" aria-label="${row.month}: el plan cubre ${num(row.coverage,1)}% de la inversión requerida" aria-valuemin="0" aria-valuemax="140" aria-valuenow="${num(row.coverage,1)}"><i style="width:${Math.min(100,row.coverage/140*100)}%"></i><b></b></div><small><b>${pen(row.requiredInvestment,0)} requeridos · plan cubre ${num(row.coverage,1)}%</b>${num(row.requiredTransactions,1)} Transacciones (${Math.ceil(row.requiredTransactions)} operativas) · ${num(row.requiredSessions,0)} sesiones</small></article>`).join("");
-}
-function renderBudgetCalculator(){const row=targetMonths.find(item=>item.month===budgetMonth),investment=row.sales*budgetRate/100,cap=row.sales*.05,headroom=cap-investment,blocked=headroom<-.001,input=document.getElementById("budgetRateInput");input.value=budgetRate;input.oninput=event=>{budgetRate=Math.min(5,Math.max(0,Number(event.target.value)));renderBudgetCalculator();};document.getElementById("budgetRateLabel").textContent=num(budgetRate,2)+"%";document.getElementById("calcSales").textContent=pen(row.sales,0);document.getElementById("calcInvestment").textContent=pen(investment);document.getElementById("calcCap").textContent=pen(cap);document.getElementById("calcHeadroom").textContent=blocked?`Bloqueado · ${pen(Math.abs(headroom))}`:`Dentro · +${pen(headroom)}`;document.getElementById("calcStatusCard").className=blocked?"blocked":"ok";const maxShare=Math.max(...campaignPlan.map(item=>item.share));document.getElementById("calculatorAllocationList").innerHTML=campaignPlan.map(item=>{const amount=investment*item.share;return `<article class="allocation-row"><span><b>${item.name}</b><small>${num(item.share*100,0)}%</small></span><div class="allocation-track"><i style="width:${item.share/maxShare*100}%;background:${item.color}"></i></div><strong>${pen(amount)}</strong></article>`;}).join("");}
-function renderTables(){document.getElementById("analyticsChannelBody").innerHTML=analyticsChannels.map(row=>`<tr><td><b>${row[0]}</b></td><td>${num(row[1])}</td><td>${num(row[2],1)}%</td><td>${row[3]}</td><td>${num(row[4],1)}%</td><td><span class="ratio">${num(row[5],3)}%</span></td><td>${num(row[6],1)}%</td><td><span class="signal ${row[0]==="Unassigned"?"audit":""}">${row[7]}</span></td></tr>`).join("");document.getElementById("networkBody").innerHTML=monthly.map(row=>`<tr><td><b>${row.period}</b></td><td>${usd(row.search.cost)}</td><td>${num(row.search.conversions,2)}</td><td>${usd(row.search.cpa)}</td><td>${usd(row.pmax.cost)}</td><td>${num(row.pmax.conversions,2)}</td><td>${usd(row.pmax.cpa)}</td></tr>`).join("");document.getElementById("qualityBody").innerHTML=quality.map(row=>`<tr><td><b>${row[0]}</b></td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td><td>${num(row[4])}</td><td>${row[5]}</td></tr>`).join("");}
-function renderPlanTables(){const capRows=capMonths.map(row=>{const cap=row[1]*.05,headroom=cap-row[2],ratio=row[2]/row[1]*100;return {month:row[0],sales:row[1],investment:row[2],cap,headroom,ratio,over:headroom<0};});document.getElementById("capBody").innerHTML=capRows.map(row=>`<tr><td><b>${row.month}</b></td><td>${pen(row.sales,0)}</td><td>${pen(row.cap)}</td><td>${pen(row.investment,0)}</td><td><span class="ratio">${num(row.ratio,3)}%</span></td><td>${row.over?"−":"+"}${pen(Math.abs(row.headroom))}</td><td><span class="signal ${row.over?"warn":""}">${row.over?"Excede":"Dentro"}</span></td></tr>`).join("");const within=capRows.filter(row=>!row.over).length,exceptions=capRows.filter(row=>row.over),totalInvestment=targetMonths.reduce((sum,row)=>sum+row.investment,0),totalHeadroom=targetMonths.reduce((sum,row)=>sum+row.sales*.05-row.investment,0),maxShare=Math.max(...campaignPlan.map(row=>row.share));document.getElementById("capStatusSummary").textContent=`${within} de ${capRows.length} meses dentro del límite`;document.getElementById("capException").textContent=exceptions.map(row=>`${row.month} alcanza ${num(row.ratio,3)}% y supera el tope visible por ${pen(Math.abs(row.headroom))}.`).join(" ")+" El ratio redondeado del archivo puede ocultar esta diferencia.";document.getElementById("allocationPlanTotal").textContent=`${pen(totalInvestment,0)} total`;document.getElementById("planHeadroom").textContent=pen(totalHeadroom);document.getElementById("allocationList").innerHTML=campaignPlan.map(row=>`<article class="allocation-row"><span><b>${row.name}</b><small>${num(row.share*100,0)}% del plan</small></span><div class="allocation-track"><i style="width:${row.share/maxShare*100}%;background:${row.color}"></i></div><strong>${pen(totalInvestment*row.share)}</strong></article>`).join("");document.getElementById("campaignPlanBody").innerHTML=campaignPlan.map(row=>{const months=targetMonths.map(month=>month.investment*row.share);return `<tr><td><b>${row.name}</b></td>${months.map(value=>`<td>${pen(value)}</td>`).join("")}<td><b>${pen(months.reduce((sum,value)=>sum+value,0))}</b></td></tr>`;}).join("");}
-function bindControls(){createButtons("scenarioButtons",Object.entries(analyticsScenarios).map(([key,item])=>({key,label:`<b>${item.short}</b><small>${item.label}</small>`})),analyticsScenario,key=>{analyticsScenario=key;bindControls();renderAnalytics();});createButtons("analyticsMetricButtons",[{key:"sessions",label:"Sesiones"},{key:"transactions",label:"Transacciones"},{key:"cvr",label:"Conversión"}],analyticsMetric,key=>{analyticsMetric=key;bindControls();renderAnalytics();});createButtons("networkMetricButtons",[{key:"cost",label:"Inversión"},{key:"conversions",label:"Conversiones"},{key:"cpa",label:"CPA"}],networkMetric,key=>{networkMetric=key;bindControls();renderNetworkChart();});createButtons("targetScenarioButtons",Object.entries(targetScenarios).map(([key,item])=>({key,label:`<b>${item.short}</b><small>${item.label}</small>`})),targetScenario,key=>{targetScenario=key;bindControls();renderTargets();});createButtons("budgetMonthButtons",targetMonths.map(item=>({key:item.month,label:item.month})),budgetMonth,key=>{budgetMonth=key;const row=targetMonths.find(item=>item.month===key);budgetRate=row.investment/row.sales*100;bindControls();renderBudgetCalculator();});}
-function renderTabs(){const buttons=[...document.querySelectorAll("#tabButtons button")];buttons.forEach((button,index)=>{const active=button.dataset.tab===currentTab;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1;button.onclick=()=>{currentTab=button.dataset.tab;renderTabs();};button.onkeydown=event=>{if(!["ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;event.preventDefault();const next=event.key==="Home"?0:event.key==="End"?buttons.length-1:(index+(event.key==="ArrowRight"?1:-1)+buttons.length)%buttons.length;buttons[next].click();buttons[next].focus();};});document.querySelectorAll(".tab-view").forEach(view=>{const active=view.id===currentTab+"View";view.classList.toggle("active",active);view.hidden=!active;});}
-renderTables();renderPlanTables();bindControls();renderAnalytics();renderNetworkChart();renderTargets();renderBudgetCalculator();renderTabs();
+const pct=value=>num(value,2)+"%";
+const selected=()=>months.find(month=>month.key===selectedMonth);
+function buttonGroup(id,items,current,onChange){const element=document.getElementById(id);element.innerHTML=items.map(item=>`<button class="${item.key===current?"active":""}" aria-pressed="${item.key===current}" data-key="${item.key}">${item.label}</button>`).join("");element.querySelectorAll("button").forEach(button=>button.onclick=()=>onChange(button.dataset.key));}
+function applyPreset(key){selectedPreset=key;state.conversion=presets[key].conversion;state.cpa=presets[key].cpa;render();}
+function setMonth(key){selectedMonth=key;state.investment=selected().investment;render();}
+function markManual(){selectedPreset="manual";}
+function project(investment){const transactions=investment/state.cpa,sessions=transactions/(state.conversion/100),sales=transactions*state.ticket;return {investment,transactions,sessions,sales};}
+function syncControls(){const month=selected(),cap=month.totalTarget*.05,investmentInput=document.getElementById("investmentInput"),investmentRange=document.getElementById("investmentRange"),conversionInput=document.getElementById("conversionInput"),conversionRange=document.getElementById("conversionRange");investmentInput.value=state.investment.toFixed(0);investmentInput.max=cap.toFixed(2);investmentRange.max=cap.toFixed(0);investmentRange.value=state.investment;conversionInput.value=state.conversion.toFixed(2);conversionRange.value=state.conversion;document.getElementById("ticketInput").value=state.ticket.toFixed(2);document.getElementById("cpaInput").value=state.cpa.toFixed(2);document.getElementById("investmentLimit").textContent=`Tope ${pen(cap)}`;document.getElementById("conversionDisplay").textContent=pct(state.conversion);document.getElementById("cpaContext").textContent=`Costo/sesión implícito ${pen(state.cpa*state.conversion/100,3)}`;}
+function bindInputs(){const month=selected(),cap=month.totalTarget*.05,updateInvestment=value=>{state.investment=Math.min(cap,Math.max(0,Number(value)||0));render();},updateConversion=value=>{state.conversion=Math.min(.6,Math.max(.01,Number(value)||.01));markManual();render();};document.getElementById("investmentInput").onchange=event=>updateInvestment(event.target.value);document.getElementById("investmentRange").oninput=event=>updateInvestment(event.target.value);document.getElementById("conversionInput").onchange=event=>updateConversion(event.target.value);document.getElementById("conversionRange").oninput=event=>updateConversion(event.target.value);document.getElementById("ticketInput").onchange=event=>{state.ticket=Math.max(1,Number(event.target.value)||1);render();};document.getElementById("cpaInput").onchange=event=>{state.cpa=Math.max(1,Number(event.target.value)||1);markManual();render();};document.getElementById("resetButton").onclick=()=>{state={investment:selected().investment,conversion:presets.plus25.conversion,ticket:baseline.ticket,cpa:presets.plus25.cpa};selectedPreset="plus25";render();};}
+function renderResults(){const month=selected(),result=project(state.investment),salesGap=result.sales-month.webTarget,cap=month.totalTarget*.05,investmentRatio=state.investment/month.totalTarget*100;document.getElementById("resultTitle").textContent=`Proyección de ${month.name}`;document.getElementById("resultAssumption").textContent=`Conversión ${pct(state.conversion)} · Ticket ${pen(state.ticket,2)} · Costo ${pen(state.cpa,2)}`;document.getElementById("projectedSales").textContent=pen(result.sales);document.getElementById("projectedTransactions").textContent=num(result.transactions,1);document.getElementById("projectedSessions").textContent=num(result.sessions,0);document.getElementById("projectedInvestment").textContent=pen(result.investment);document.getElementById("salesComparison").textContent=`${salesGap>=0?"Sobre":"Bajo"} meta web por ${pen(Math.abs(salesGap))}`;document.getElementById("investmentComparison").textContent=`${pct(investmentRatio)} de ventas objetivo · tope ${pen(cap)}`;document.getElementById("decisionTitle").textContent=salesGap>=0?"El escenario supera la meta web":"El escenario no alcanza la meta web";document.getElementById("decisionText").textContent=`Resultado condicionado a ${pct(state.conversion)} de conversión, ${pen(state.ticket,2)} de ticket promedio y ${pen(state.cpa,2)} de costo de adquisición.`;}
+function renderMonths(){const investments=months.map(month=>month.key===selectedMonth?state.investment:month.investment),maxCoverage=Math.max(...months.map((month,index)=>project(investments[index]).sales/month.webTarget*100));document.getElementById("monthGrid").innerHTML=months.map((month,index)=>{const investment=investments[index],isActive=month.key===selectedMonth,result=project(investment),gap=result.sales-month.webTarget,coverage=result.sales/month.webTarget*100,ratio=investment/month.totalTarget*100;return `<article class="month-card ${isActive?"active":""}"><header><h3>${month.key}</h3><span class="signal ${gap<0?"below":""}">${gap>=0?"Sobre meta":"Bajo meta"}</span></header><dl><dt>Meta web</dt><dd>${pen(month.webTarget)}</dd><dt>Ventas web proyectadas</dt><dd>${pen(result.sales)}</dd><dt>Transacciones</dt><dd>${num(result.transactions,1)}</dd><dt>${isActive?"Inversión escenario":"Inversión plan"}</dt><dd>${pen(investment)}</dd><dt>Inversión / meta total</dt><dd>${pct(ratio)}</dd><dt>Brecha</dt><dd>${gap>=0?"+":"−"}${pen(Math.abs(gap))}</dd></dl><div class="track" role="img" aria-label="${pct(coverage)} de la meta web" title="${pct(coverage)} de la meta"><i style="width:${Math.min(100,coverage/maxCoverage*100)}%"></i></div></article>`;}).join("");}
+function render(){buttonGroup("monthButtons",months.map(month=>({key:month.key,label:month.key})),selectedMonth,setMonth);const scenarioItems=Object.entries(presets).map(([key,item])=>({key,label:item.label}));if(selectedPreset==="manual")scenarioItems.push({key:"manual",label:"Manual"});buttonGroup("scenarioButtons",scenarioItems,selectedPreset,key=>key!=="manual"&&applyPreset(key));syncControls();bindInputs();renderResults();renderMonths();}
+render();
 </script>
 </body>
 </html>
