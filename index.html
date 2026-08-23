@@ -33,6 +33,7 @@
     @media(max-width:600px){.shell{width:calc(100% - 24px);padding-top:19px}header,.panel-head,footer{align-items:flex-start;flex-direction:column}header>*,.hero>*,.panel{min-width:0;max-width:100%}h1{font-size:31px}.hero h2,h1{overflow-wrap:anywhere}.status{white-space:normal}.hero{padding:22px}.panel{padding:17px}.switch{width:100%;flex-wrap:wrap}.switch button{flex:1;min-width:0;padding-inline:7px}.view-tabs{width:100%}.view-tabs button{flex:1;min-width:0;padding-inline:10px}.model,.seasonal-grid,.results,.trend-grid,.month-grid,.decision-grid,.event-grid,.allocation-list,.composition-grid,.gads-grid,.lever-grid{grid-template-columns:minmax(0,1fr)}.gads-kpis{grid-template-columns:minmax(0,1fr)}.control-head{align-items:flex-start;flex-direction:column}.number-wrap{width:100%;min-width:0}.number-wrap input{min-width:0}.result,.result.primary,.result.ratio,.result.composition{grid-column:1;min-height:130px}.formula-flow{justify-content:flex-start}.trend-card{padding:12px}.trend-label,.trend-scale{font-size:12px}.chart-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}.chart-dialog-shell{padding:14px}.chart-dialog-head{position:sticky;top:0;z-index:2;padding-bottom:10px;background:#fff}.chart-dialog-head h2{font-size:19px}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
   .brand{display:flex;align-items:center;gap:16px}.brand-logos{display:inline-flex;align-items:center;gap:12px;flex:none}.brand-logos:empty{display:none}.brand-logos img,.brand-logos svg{display:block;height:34px;width:auto}
+    .dl-xlsx{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:11px;background:var(--blue2);color:#fff;font-family:inherit;font-size:12px;font-weight:800;letter-spacing:.01em;cursor:pointer;flex:none;transition:background .15s ease}.dl-xlsx svg{width:15px;height:15px;flex:none}.dl-xlsx:hover{background:#3a5b88}.dl-xlsx:active{background:#33507a}.dl-xlsx:focus-visible{outline:3px solid rgba(70,107,159,.45);outline-offset:2px}
   </style>
 </head>
 <body>
@@ -65,7 +66,7 @@
     </article>
 
     <article class="panel">
-      <div class="panel-head"><div><p class="kicker">RESULTADOS</p><h2 id="resultTitle">Proyección de septiembre</h2><p id="resultAssumption"></p></div></div>
+      <div class="panel-head"><div><p class="kicker">RESULTADOS</p><h2 id="resultTitle">Proyección de septiembre</h2><p id="resultAssumption"></p></div><button class="dl-xlsx" id="downloadExcel" type="button" title="Genera un Excel (.xlsx) con el cálculo del escenario y sus fórmulas editables"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m6 11 6 6 6-6"/><path d="M4 21h16"/></svg>Descargar excel</button></div>
       <div class="results" id="resultRegion" aria-live="polite">
         <div class="result primary"><p>Total combinado del escenario</p><strong id="projectedTotalSales"></strong><span>Web proyectada + metas fijas de Rambla y Salaverry.</span></div>
         <div class="result ratio"><p>Inversión / total combinado</p><strong id="scenarioInvestmentShare"></strong><span id="investmentShareFormula"></span></div>
@@ -326,11 +327,129 @@ function renderGadsCampaignChart(){const card=document.querySelector(".gads-camp
  svg.onkeydown=event=>{if(event.key==="ArrowRight"||event.key==="ArrowLeft"){event.preventDefault();active=Math.max(0,Math.min(count-1,active+(event.key==="ArrowRight"?1:-1)));show();}else if(event.key==="Home"||event.key==="End"){event.preventDefault();active=event.key==="Home"?0:count-1;show();}else if(event.key==="Escape")hide();};
  document.getElementById("gadsCampZeroNote").textContent=`Campañas activas sin conversión (CPA indefinido): ${gadsCampaigns.filter(month=>month.zeroNote).map(month=>`${month.key}: ${month.zeroNote}`).join(" ")||"ninguna en el periodo"}`;}
 function renderGadsCampaignTable(){document.getElementById("gadsCampaignBody").innerHTML=gadsCampaigns.map(month=>{const cells=[];const row=tuple=>{const [name,spend,conv,cpa,net]=tuple,label=name.replace(/"/g,"&quot;");cells.push(`<tr>${cells.length?"":`<td style="text-align:left"><b>${month.key}</b>${gadsMonthly[gadsCampaigns.indexOf(month)].partial?' <span class="gads-partial-tag">parcial</span>':""}</td>`}<td style="text-align:left"><span class="camp-badge ${cells.length<3?"top":"low"}">${cells.length<3?"Top":"Bajo"}</span></td><td class="cname" title="${label}">${name}${net?' <span class="camp-net-tag">red</span>':""}${cpa===null?' <span class="camp-zero-tag">sin conv.</span>':""}</td><td>${usd(spend)}</td><td>${pen(Math.round(spend*350)/100,2)}</td><td>${num(conv,Number.isInteger(conv)?0:2)}</td><td>${cpa===null?"—":usd(cpa)}</td><td>${cpa===null?"—":pen(Math.round(cpa*350)/100,2)}</td></tr>`);};month.top.forEach(row);month.bottom.forEach(row);return cells.join("");}).join("");}
+/*XLSX-BEGIN*/
+const XLSX_ST={HDR:1,BOLD:2,USD:3,PEN:4,PCT:5,INT:6,DEC2:7,USDB:8,PENB:9,PCTB:10,INTB:11};
+function xlsxEscText(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function xlsxEscF(v){return String(v).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function xlsxCol(i){let s="";i+=1;while(i){s=String.fromCharCode(65+(i-1)%26)+s;i=Math.floor((i-1)/26);}return s;}
+function xlsxEncode(s){return new TextEncoder().encode(s);}
+const xlsxCrcTable=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c;}return t;})();
+function xlsxZip(files){const parts=[],central=[];let offset=0;
+ for(const file of files){const name=xlsxEncode(file.name),data=file.data,crc=(()=>{let c=-1;for(let i=0;i<data.length;i++)c=xlsxCrcTable[(c^data[i])&255]^(c>>>8);return(c^-1)>>>0;})(),local=new DataView(new ArrayBuffer(30));
+  local.setUint32(0,0x4034b50,true);local.setUint16(4,20,true);local.setUint16(10,24576,true);local.setUint16(12,23831,true);local.setUint32(14,crc,true);local.setUint32(18,data.length,true);local.setUint32(22,data.length,true);local.setUint16(26,name.length,true);
+  parts.push(new Uint8Array(local.buffer),name,data);
+  const head=new DataView(new ArrayBuffer(46));
+  head.setUint32(0,0x2014b50,true);head.setUint16(4,20,true);head.setUint16(6,20,true);head.setUint16(12,24576,true);head.setUint16(14,23831,true);head.setUint32(16,crc,true);head.setUint32(20,data.length,true);head.setUint32(24,data.length,true);head.setUint16(28,name.length,true);head.setUint32(42,offset,true);
+  central.push(new Uint8Array(head.buffer),name);
+  offset+=30+name.length+data.length;}
+ let cdSize=0;central.forEach(p=>cdSize+=p.length);
+ const end=new DataView(new ArrayBuffer(22));
+ end.setUint32(0,0x6054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cdSize,true);end.setUint32(16,offset,true);
+ const chunks=[...parts,...central,new Uint8Array(end.buffer)],total=chunks.reduce((sum,chunk)=>sum+chunk.length,0),out=new Uint8Array(total);
+ let cursor=0;chunks.forEach(chunk=>{out.set(chunk,cursor);cursor+=chunk.length;});
+ return out;}
+function xlsxSheetXml(sheet){const widths=sheet.widths?`<cols>${sheet.widths.map(w=>`<col min="${w[0]}" max="${w[1]}" width="${w[2]}" customWidth="1"/>`).join("")}</cols>`:"",body=sheet.rows.map((row,ri)=>row===null?"":`<row r="${ri+1}">${row.map((cell,ci)=>{if(cell===null||cell===undefined)return "";const ref=xlsxCol(ci)+(ri+1),st=cell.st?` s="${cell.st}"`:"";
+ if(cell.f!==undefined){const type=typeof cell.v==="string"?' t="str"':"";return `<c r="${ref}"${st}${type}><f>${xlsxEscF(cell.f)}</f>${cell.v===undefined?"":`<v>${typeof cell.v==="string"?xlsxEscText(cell.v):cell.v}</v>`}</c>`;}
+ if(typeof cell.v==="number")return `<c r="${ref}"${st}><v>${cell.v}</v></c>`;
+ return `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${xlsxEscText(cell.v)}</t></is></c>`;}).join("")}</row>`).join("");
+ return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0">${sheet.frozen?'<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/>':""}</sheetView></sheetViews>${widths}<sheetData>${body}</sheetData></worksheet>`;}
+function buildExcelFiles(sheets){const enc=xlsxEncode;
+ const types=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join("")}</Types>`;
+ const rootRels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`;
+ const book=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${xlsxEscText(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join("")}</sheets><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>`;
+ const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join("")}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
+ const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="2"><numFmt numFmtId="164" formatCode="&quot;$&quot;#,##0.00"/><numFmt numFmtId="165" formatCode="&quot;S/&quot; #,##0.00"/></numFmts><fonts count="3"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF466B9F"/></patternFill></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="12"><xf/><xf fontId="2" fillId="2" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf fontId="1" applyFont="1"/><xf numFmtId="164" applyNumberFormat="1"/><xf numFmtId="165" applyNumberFormat="1"/><xf numFmtId="10" applyNumberFormat="1"/><xf numFmtId="3" applyNumberFormat="1"/><xf numFmtId="4" applyNumberFormat="1"/><xf fontId="1" numFmtId="164" applyFont="1" applyNumberFormat="1"/><xf fontId="1" numFmtId="165" applyFont="1" applyNumberFormat="1"/><xf fontId="1" numFmtId="10" applyFont="1" applyNumberFormat="1"/><xf fontId="1" numFmtId="3" applyFont="1" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+ const files=[{name:"[Content_Types].xml",data:enc(types)},{name:"_rels/.rels",data:enc(rootRels)},{name:"xl/workbook.xml",data:enc(book)},{name:"xl/_rels/workbook.xml.rels",data:enc(rels)},{name:"xl/styles.xml",data:enc(styles)}];
+ sheets.forEach((s,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,data:enc(xlsxSheetXml(s))}));
+ return files;}
+function buildExcelWorkbook(ctx,d){const ST=XLSX_ST,T=v=>({v}),hdr=labels=>labels.map(l=>({v:l,st:ST.HDR})),Q="'Parámetros'!",REG=ctx.modelLabel==="Regresión Cyber";
+ const P={},rowsP=[hdr(["PARÁMETROS DEL ESCENARIO","VALOR","NOTA"])];const addP=(label,value,st,note,key)=>{if(key)P[key]=`$B$${rowsP.length+1}`;rowsP.push([{v:label},value===null?null:{...(typeof value==="number"?{v:value}:{v:value}),...(st?{st}:{})},note?{v:note}:null]);};
+ addP("Tipo de cambio (TC)",3.5,ST.DEC2,"S/ por US$ · fijo en todo el reporte","tc");
+ addP("Modelo del escenario",ctx.modelLabel,null,"Eficiencia directa o regresión Cyber de noviembre","model");
+ addP("Conversión web activa",ctx.convActive/100,ST.PCT,"Transacciones por sesión","convA");
+ addP("Ticket promedio activo (S/)",ctx.ticketActive,ST.PEN,"Venta media por transacción web","tickA");
+ addP("Costo por transacción activo (S/)",ctx.cpaActive,ST.PEN,"CPA implícito cuando el modelo es Regresión Cyber","cpaA");
+ addP("Inversión del escenario (S/)",ctx.inv,ST.PEN,"Editable en el dashboard con sliders","inv");
+ addP("Mes seleccionado",ctx.monthName,null,null,"month");
+ rowsP.push(null);
+ rowsP.push([{v:"SUPUESTOS MESES ESTÁNDAR (SET–DIC)",st:ST.BOLD},null,null]);
+ addP("Conversión estándar",ctx.convStd/100,ST.PCT,"Aplicada a meses sin regresión","convS");
+ addP("Ticket estándar (S/)",ctx.ticketStd,ST.PEN,null,"tickS");
+ addP("Costo por transacción estándar (S/)",ctx.cpaStd,ST.PEN,null,"cpaS");
+ rowsP.push(null);
+ rowsP.push([{v:"REGRESIÓN CYBER · NOVIEMBRE",st:ST.BOLD},null,null]);
+ addP("Intercepto (ln sesiones)",d.regression.intercept,ST.DEC2,"Regresión sesiones ~ inversión GA4","int");
+ addP("Elasticidad inversión",d.regression.elasticity,ST.DEC2,null,"ela");
+ rowsP.push(null);
+ [["Fuente","Dashboard WYNK Proyección 2026 · literales validados por scripts/validate_wynk_integration.mjs"],["Extracción","23/08/2026 · corte GADS 21/08/2026"],["Estado","human_review_required · no compartir con cliente sin aprobación humana"],["Nota","Las celdas con fórmula se recalculan al abrir; editar parámetros propaga el cálculo"]].forEach(([a,b])=>addP(a,b,null,null));
+ const rowsR=[hdr(["RESULTADO DEL ESCENARIO","VALOR"])],R=i=>`B${i}`;
+ const rowMes=2,rowMod=3,rowInv=4,rowSes=5,rowTra=6,rowCpa=7,rowVen=8,rowNet=9,rowIgv=10,rowSal=11,rowRam=12,rowTot=13,rowPar=14,rMN=15,rMI=16,rMB=17,rowBre=18,rowCob=19;
+ rowsR.push([{v:"Mes"},{f:`${Q}${P.month}`,v:ctx.monthName}]);
+ rowsR.push([{v:"Modelo"},{f:`${Q}${P.model}`,v:ctx.modelLabel}]);
+ rowsR.push([{v:"Inversión (S/)"},{f:`${Q}${P.inv}`,v:ctx.inv,st:ST.PEN}]);
+ rowsR.push([{v:"Sesiones web"},{f:`IF(${REG?`${Q}${P.inv}>0,EXP(${Q}${P.int}+${Q}${P.ela}*LN(${Q}${P.inv})),0`:`${Q}${P.inv}>0,(${Q}${P.inv}/${Q}${P.cpaS})/${Q}${P.convS},0`})`,v:(REG?(ctx.inv>0?Math.exp(d.regression.intercept+d.regression.elasticity*Math.log(ctx.inv)):0):(ctx.inv>0?ctx.inv/ctx.cpaStd/(ctx.convStd/100):0)),st:ST.INT}]);
+ const sessionsCached=rowsR[rowSes-1][1].v;
+ rowsR.push([{v:"Transacciones web"},{f:REG?`${R(rowSes)}*${Q}${P.convA}`:`IF(${Q}${P.inv}>0,${Q}${P.inv}/${Q}${P.cpaS},0)`,v:REG?sessionsCached*(ctx.convActive/100):(ctx.inv>0?ctx.inv/ctx.cpaStd:0),st:ST.DEC2}]);
+ const transCached=rowsR[rowTra-1][1].v;
+ rowsR.push([{v:"Costo por transacción (S/)"},{f:REG?`IF(${R(rowTra)}>0,${R(rowInv)}/${R(rowTra)},0)`:`${Q}${P.cpaA}`,v:ctx.cpaActive,st:ST.PEN}]);
+ rowsR.push([{v:"Ventas web (S/)"},{f:`${R(rowTra)}*${Q}${REG?P.tickA:P.tickS}`,v:transCached*(REG?ctx.ticketActive:ctx.ticketStd),st:ST.PEN}]);
+ const salesCached=rowsR[rowVen-1][1].v;
+ rowsR.push([{v:"Ventas web sin IGV (S/)"},{f:`${R(rowVen)}*100/118`,v:salesCached*100/118,st:ST.PEN}]);
+ rowsR.push([{v:"IGV incluido (S/)"},{f:`${R(rowVen)}*18/118`,v:salesCached*18/118,st:ST.PEN}]);
+ rowsR.push([{v:"Meta fija Salaverry (S/)"},{v:ctx.salaverry,st:ST.PEN}]);
+ rowsR.push([{v:"Meta fija Rambla (S/)"},{v:ctx.rambla,st:ST.PEN}]);
+ rowsR.push([{v:"Total combinado (S/)"},{f:`${R(rowVen)}+${R(rowSal)}+${R(rowRam)}`,v:salesCached+ctx.salaverry+ctx.rambla,st:ST.PENB}]);
+ rowsR.push([{v:"Participación inversión"},{f:`IF(${R(rowTot)}>0,${R(rowInv)}/${R(rowTot)},0)`,v:(salesCached+ctx.salaverry+ctx.rambla)>0?ctx.inv/(salesCached+ctx.salaverry+ctx.rambla):0,st:ST.PCT}]);
+ rowsR.push([{v:"Meta web sin IGV (S/)"},{v:ctx.targetNet,st:ST.PEN}]);
+ rowsR.push([{v:"IGV meta (S/)"},{v:ctx.targetIgv,st:ST.PEN}]);
+ rowsR.push([{v:"Meta web bruta (S/)"},{v:ctx.targetGross,st:ST.PEN}]);
+ rowsR.push([{v:"Brecha vs meta bruta (S/)"},{f:`${R(rowVen)}-${R(rMB)}`,v:salesCached-ctx.targetGross,st:ST.PEN}]);
+ rowsR.push([{v:"Cobertura de meta web"},{f:`IF(${R(rMB)}>0,${R(rowVen)}/${R(rMB)},0)`,v:ctx.targetGross>0?salesCached/ctx.targetGross:0,st:ST.PCT}]);
+ const rowsM=[hdr(["MES","INVERSIÓN (S/)","SESIONES","TRANSACCIONES","CONVERSIÓN","VENTAS WEB (S/)","SALAVERRY (S/)","RAMBLA (S/)","TOTAL COMBINADO (S/)","META WEB BRUTA (S/)","BRECHA (S/)","COBERTURA","MODELO"])],wT=d.webTargets;
+ d.months.forEach((m,i)=>{const r=i+2,inv=m.key===ctx.monthKey?ctx.inv:m.investment,nov=m.key==="Nov",eff=nov&&REG,ticketRef=eff?P.tickA:P.tickS;
+  const ses=eff?(inv>0?Math.exp(d.regression.intercept+d.regression.elasticity*Math.log(inv)):0):(inv>0?inv/ctx.cpaStd/(ctx.convStd/100):0);
+  const tra=eff?ses*(ctx.convActive/100):(inv>0?inv/ctx.cpaStd:0),ven=tra*(eff?ctx.ticketActive:ctx.ticketStd),gross=wT.find(t=>t.key===m.key)?.gross??0,total=ven+m.salaverry+m.rambla;
+  rowsM.push([{v:m.key},{v:inv,st:ST.PEN},
+   {f:eff?`IF(B${r}>0,EXP(${Q}${P.int}+${Q}${P.ela}*LN(B${r})),0)`:`IF(B${r}>0,(B${r}/${Q}${P.cpaS})/${Q}${P.convS},0)`,v:ses,st:ST.INT},
+   {f:eff?`C${r}*${Q}${P.convA}`:`IF(B${r}>0,B${r}/${Q}${P.cpaS},0)`,v:tra,st:ST.DEC2},
+   {f:`IF(C${r}>0,D${r}/C${r},0)`,v:ses>0?tra/ses:0,st:ST.PCT},
+   {f:`D${r}*${Q}${ticketRef}`,v:ven,st:ST.PEN},
+   {v:m.salaverry,st:ST.PEN},{v:m.rambla,st:ST.PEN},
+   {f:`SUM(F${r}:H${r})`,v:total,st:ST.PEN},
+   {v:gross,st:ST.PEN},
+   {f:`F${r}-J${r}`,v:ven-gross,st:ST.PEN},
+   {f:`IF(J${r}>0,F${r}/J${r},0)`,v:gross>0?ven/gross:0,st:ST.PCT},
+   {v:eff?"Cyber Reg.":ctx.modelLabel}]);});
+ const rowsA=[hdr(["CANAL","PARTICIPACIÓN","MONTO (S/)","MONTO (US$)"])];
+ d.allocations.forEach((a,i)=>{const r=i+2;rowsA.push([{v:a.name},{v:a.share,st:ST.PCT},{f:`${Q}${P.inv}*B${r}`,v:ctx.inv*a.share,st:ST.PEN},{f:`C${r}/${Q}${P.tc}`,v:ctx.inv*a.share/3.5,st:ST.USD}]);});
+ const tr=d.allocations.length+2;rowsA.push([{v:"Total",st:ST.BOLD},{f:`SUM(B2:B${tr-1})`,v:d.allocations.reduce((s,a)=>s+a.share,0),st:ST.PCTB},{f:`SUM(C2:C${tr-1})`,v:ctx.inv,st:ST.PENB},{f:`SUM(D2:D${tr-1})`,v:ctx.inv/3.5,st:ST.USDB}]);
+ const rowsG=[hdr(["MES","COBERTURA","IMPRESIONES","CLICS","CTR","INVERSIÓN (US$)","INVERSIÓN (S/)","CPC (US$)","CPC (S/)","CONVERSIONES","CPA (US$)","CPA (S/)"])];
+ d.gadsMonthly.forEach((m,i)=>{const r=i+2;rowsG.push([{v:m.key+(m.partial?" · parcial":"")},{v:m.coverage},{v:m.impressions,st:ST.INT},{v:m.clicks,st:ST.INT},{f:`IF(C${r}>0,D${r}/C${r},0)`,v:m.impressions>0?m.clicks/m.impressions:0,st:ST.PCT},{v:m.spendUsd,st:ST.USD},{f:`F${r}*${Q}${P.tc}`,v:m.spendPen,st:ST.PEN},{f:`IF(D${r}>0,F${r}/D${r},0)`,v:m.clicks>0?m.spendUsd/m.clicks:0,st:ST.USD},{f:`H${r}*${Q}${P.tc}`,v:m.cpcPen,st:ST.PEN},{v:m.conversions,st:ST.DEC2},{f:`IF(J${r}>0,F${r}/J${r},0)`,v:m.conversions>0?m.spendUsd/m.conversions:0,st:ST.USD},{f:`K${r}*${Q}${P.tc}`,v:m.cpaPen,st:ST.PEN}]);});
+ const gt=d.gadsTotals,gr=d.gadsMonthly.length+2;
+ rowsG.push([{v:"Total cuenta",st:ST.BOLD},{v:"",st:ST.BOLD},{f:`SUM(C2:C${gr-1})`,v:gt.impressions,st:ST.INTB},{f:`SUM(D2:D${gr-1})`,v:gt.clicks,st:ST.INTB},{f:`IF(C${gr}>0,D${gr}/C${gr},0)`,v:gt.impressions>0?gt.clicks/gt.impressions:0,st:ST.PCTB},{f:`SUM(F2:F${gr-1})`,v:gt.spendUsd,st:ST.USDB},{f:`SUM(G2:G${gr-1})`,v:gt.spendPen,st:ST.PENB},{f:`IF(D${gr}>0,F${gr}/D${gr},0)`,v:gt.clicks>0?gt.spendUsd/gt.clicks:0,st:ST.USDB},{f:`H${gr}*${Q}${P.tc}`,v:gt.cpcPen,st:ST.PENB},{f:`SUM(J2:J${gr-1})`,v:gt.conversions,st:ST.DEC2},{f:`IF(J${gr}>0,F${gr}/J${gr},0)`,v:gt.conversions>0?gt.spendUsd/gt.conversions:0,st:ST.USDB},{f:`K${gr}*${Q}${P.tc}`,v:gt.cpaPen,st:ST.PENB}]);
+ const rowsC=[hdr(["MES","GRUPO","CAMPAÑA","RED","INVERSIÓN (US$)","INVERSIÓN (S/)","CONVERSIONES","CPA (US$)","CPA (S/)"])];
+ d.gadsCampaigns.forEach(m=>{[["Top",m.top],["Bajo",m.bottom]].forEach(([grupo,list])=>list.forEach(t=>{const [name,spend,conv,cpa,net]=t,r=rowsC.length+1;rowsC.push([{v:m.key},{v:grupo},{v:name},{v:net?"Sí":""},{v:spend,st:ST.USD},{f:`E${r}*${Q}${P.tc}`,v:Math.round(spend*350)/100,st:ST.PEN},{v:conv,st:ST.DEC2},{f:`IF(G${r}>0,E${r}/G${r},"")`,v:cpa===null?"":cpa,st:ST.USD},{f:`IF(H${r}="","",H${r}*${Q}${P.tc})`,v:cpa===null?"":Math.round(cpa*350)/100,st:ST.PEN}]);}));});
+ const rowsJ=[hdr(["MES","ESCENARIO","TRANSACCIONES REQUERIDAS","INVERSIÓN REQUERIDA (S/)","PLAN (S/)","META TOTAL (S/)","TOPE 5% (S/)","VEREDICTO"])];
+ d.gadsProjection.forEach(pm=>{pm.rows.forEach(row=>{const r=rowsJ.length+1;rowsJ.push([{v:pm.month},{v:row[0]},{v:pm.required,st:ST.INT},{v:row[1],st:ST.PEN},{v:pm.plan,st:ST.PEN},{v:d.months.find(m=>m.key===pm.month)?.totalTarget??0,st:ST.PEN},{f:`F${r}*0.05`,v:Math.round((d.months.find(m=>m.key===pm.month)?.totalTarget??0)*5)/100,st:ST.PEN},{f:`IF(D${r}>G${r},"Excede","Cabe")`,v:row[2]?"Cabe":"Excede"}]);});});
+ rowsJ.push(null);rowsJ.push([{v:"Requerido y escenarios provienen de la capa calculada validada; tope y veredicto se recalculan con fórmulas.",st:ST.BOLD}]);
+ return buildExcelFiles([
+  {name:"Parámetros",rows:rowsP,widths:[[1,1,38],[2,2,20],[3,3,58]],frozen:true},
+  {name:"Resultados",rows:rowsR,widths:[[1,1,32],[2,2,22]],frozen:true},
+  {name:"Proyección meses",rows:rowsM,widths:[[1,13,13]],frozen:true},
+  {name:"Asignación",rows:rowsA,widths:[[1,1,36],[2,2,15],[3,3,16],[4,4,14]],frozen:true},
+  {name:"GADS mensual",rows:rowsG,widths:[[1,2,16],[3,4,13],[5,5,9],[6,7,15],[8,9,11],[10,10,14],[11,12,12]],frozen:true},
+  {name:"GADS campañas",rows:rowsC,widths:[[1,1,7],[2,2,8],[3,3,44],[4,4,6],[5,6,16],[7,7,14],[8,9,12]],frozen:true},
+  {name:"Ajuste inversión GADS",rows:rowsJ,widths:[[1,1,7],[2,2,18],[3,3,22],[4,6,22],[7,7,14],[8,8,11]],frozen:true}]);}
+/*XLSX-END*/
 function selectView(view){const gads=view==="gads";for(const[id,active]of[["tabProyeccion",!gads],["tabGads",gads]]){const tab=document.getElementById(id);tab.setAttribute("aria-selected",String(active));tab.tabIndex=active?0:-1;}document.getElementById("panelProyeccion").hidden=gads;document.getElementById("panelGads").hidden=!gads;if(gads&&!gadsRendered){renderGads();gadsRendered=true;}if(!gads)document.getElementById("panelProyeccion").scrollIntoView({behavior:"smooth",block:"start"});}
 document.getElementById("tabProyeccion").onclick=()=>selectView("proyeccion");
 document.getElementById("tabGads").onclick=()=>selectView("gads");
 document.querySelector(".view-tabs").onkeydown=event=>{if(event.key!=="ArrowRight"&&event.key!=="ArrowLeft")return;event.preventDefault();const current=document.activeElement.id,next=current==="tabProyeccion"?(event.key==="ArrowRight"?"tabGads":"tabProyeccion"):(event.key==="ArrowRight"?"tabProyeccion":"tabGads");document.getElementById(next).focus();selectView(next==="tabGads"?"gads":"proyeccion");};
 render();
+document.getElementById("downloadExcel").onclick=()=>{const month=selected(),target=targetFor(month.key),result=project(state.investment);
+ const ctx={monthKey:month.key,monthName:month.name,modelLabel:state.model==="regression"?"Regresión Cyber":"Eficiencia directa",inv:state.investment,convActive:state.conversion,ticketActive:state.ticket,cpaActive:result.cpa,convStd:state.model==="regression"?presets.plus25.conversion:state.conversion,ticketStd:state.model==="regression"?baseline.ticket:state.ticket,cpaStd:state.model==="regression"?presets.plus25.cpa:state.cpa,salaverry:month.salaverry,rambla:month.rambla,targetNet:target.net,targetIgv:target.igv,targetGross:target.gross};
+ const bytes=xlsxZip(buildExcelWorkbook(ctx,{months,webTargets,gadsMonthly,gadsTotals,gadsCampaigns,gadsProjection,allocations,regression}));
+ const link=document.createElement("a");link.href=URL.createObjectURL(new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));link.download="wynk-proyeccion-2026.xlsx";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(link.href),4000);};
 </script>
 </body>
 </html>
